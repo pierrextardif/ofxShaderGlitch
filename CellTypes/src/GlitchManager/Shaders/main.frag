@@ -34,7 +34,7 @@ float ColumnsCheck(vec2 uv_Norm){
 }
 
 float ColOrLineCheck(vec2 uv_Norm){
-    return (LinesCheck(uv_Norm) + ColumnsCheck(uv_Norm) );
+    return min( (LinesCheck(uv_Norm) + ColumnsCheck(uv_Norm) ), 1.0f);
 }
 
 float ColAndLineCheck(vec2 uv_Norm){
@@ -50,7 +50,7 @@ void main( void )
     
     vec2 uv_Norm = vec2(gl_TexCoord[0].st / u_resImg);
 
-    float prop = 0;
+    float prop = 0.0f;
     
     if(u_tilingType == 0)prop = LinesCheck(uv_Norm);
     if(u_tilingType == 1)prop = ColumnsCheck(uv_Norm);
@@ -58,7 +58,15 @@ void main( void )
     if(u_tilingType == 3)prop = ColAndLineCheck(uv_Norm);
     if(u_tilingType == 4)prop = CellsCheck(uv_Norm);
     
-    colors.r += prop;
+    if(prop > 0.0f){
+        float newR = texture2DRect(u_tex_unit0, gl_TexCoord[0].st * 1.04f ).r;
+        float newG = texture2DRect(u_tex_unit0, gl_TexCoord[0].st * 1.03f ).g;
+        float newB = texture2DRect(u_tex_unit0, gl_TexCoord[0].st * 1.02f ).b;
+        
+        colors.r = mix(colors.r, newR, prop);
+        colors.g = mix(colors.g, newG, prop);
+        colors.b = mix(colors.b, newB, prop);
+    }
     
     gl_FragColor = colors;
 }

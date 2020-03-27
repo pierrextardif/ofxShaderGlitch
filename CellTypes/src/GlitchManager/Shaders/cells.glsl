@@ -8,7 +8,7 @@ uniform vec2             u_OffsetCells;
 
 float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
 
-    float InsideCell = (1 - sin(cellXY.y * M_PI)) + (1 - sin(cellXY.x * M_PI));
+    float InsideCell = abs(sin(fract(cellXY.y) * M_PI) + sin(fract(cellXY.x) * M_PI));
     float cellXSize = cellXY.x;
     float cellYSize = cellXY.y;
 
@@ -23,14 +23,15 @@ float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
     float B = heightSlope;
     // TOP side
     if( (cellXSize <= slope)&&(cellYSize <= A * cellXSize + B)){
-       InsideCell = 0;
+       InsideCell = 0.0f;
     }
     A = (1 - heightSlope) / slope;
     B = heightSlope;
     // BOTTOM side
     if(     (cellXSize <= slope)&&
            (cellYSize >= A * cellXSize + B)){
-      InsideCell = 0;
+        InsideCell = 0.0f;
+        
     }
 
     
@@ -43,7 +44,7 @@ float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
 
     if( cellXSize >= slope &&
       (cellYSize <= A * cellXSize + B) ){
-       InsideCell = 0;
+       InsideCell = 0.0f;
     }
     // BOTTOM side
     A = (heightSlope - 1) / slope;
@@ -51,9 +52,9 @@ float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
 
     if( cellXSize >= slope &&
       (cellYSize >= A * cellXSize + B) ){
-       InsideCell = 0;
+       InsideCell = 0.0f;
     }
-    return InsideCell;
+    return min(InsideCell, 1.0f);
 }
 
 float Hash21(vec2 p){

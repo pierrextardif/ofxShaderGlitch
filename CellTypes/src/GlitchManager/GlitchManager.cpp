@@ -28,7 +28,7 @@ void GlitchManager::initGui(){
     
     typeTiling.setName("tylingType");
     typeTiling.add(type.set("type of tyling", 0, 0, 4));
-    typeTiling.add(speedMoves.set("Speed", {1,1}, {0,0}, {10,10}));
+    typeTiling.add(speedMoves.set("Speed", {1,1}, {-10, -10}, {10,10}));
     typeTiling.add(amntLinesColumns.set("amnt of Lines // Columns", {2,2}, {1,1}, {300,300}));
     
     gui.add(typeTiling);
