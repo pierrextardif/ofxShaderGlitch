@@ -1,2 +1,0 @@
-ofxAutoReloadedShader
-ofxGui
