@@ -34,12 +34,13 @@ void GlitchManager::initGui(){
     typeTiling.setName("tylingType");
     
     //
-    typeTiling.add(type.set("type of tyling", 0, 0, 6));
+    typeTiling.add(type.set("type of tyling", 0, 0, 7));
     typeTiling.add(speedMoves.set("Speed", {1,1}, {-10, -10}, {10,10}));
     typeTiling.add(amntLinesColumns.set("amnt of Lines // Columns", {2,2}, {1,1}, {300,300}));
     gui.add(props.set("testGradSize", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0,0,0,0), ofVec4f(1,1,1,1)));
     gui.add(alphaGradiant.set("alphaGradiant", 0.8, 0, 1));
     gui.add(gradiantColor.set("gradiantColor", ofColor(200, 255, 0)));
+    gui.add(continuousMosh.set("continuous Mosh", false));
     
     gui.add(typeTiling);
 }
@@ -56,6 +57,7 @@ void GlitchManager::begin(){
     shader.setUniform2f("u_gradFinish", props->z, props->w);
     shader.setUniform1f("u_alphaGradiant", alphaGradiant);
     shader.setUniform4f("u_gradiantColor", gradiantColor->r / 255., gradiantColor->g  / 255., gradiantColor->b  / 255., gradiantColor->a / 255.);
+    shader.setUniform1f("u_continuousMosh", (continuousMosh == true) ? 1.:0.);
     cells.addUniforms();
     edges.addUniforms();
     

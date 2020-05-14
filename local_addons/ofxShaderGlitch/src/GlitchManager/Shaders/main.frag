@@ -15,6 +15,7 @@ uniform vec2                u_gradFinish;
 uniform float               u_alphaGradiant;
 
 uniform float               u_thresholdNoise;
+uniform float               u_continuousMosh;
 
 // Colors
 uniform vec4                u_BackGrndColor;
@@ -52,9 +53,53 @@ vec2 lateralSlider(vec2 uv){
 
 // ================
 
+float area(vec2 uv, float amnt, float u_time, float threshold){
+    float col = 0.;
+    
+    float k = 0.;
+    
+    
+    float speed = u_time * 0.05;
+    if(u_continuousMosh != 1.)speed = floor(u_time);
+    
+    for(k=1.; k <= amnt + 1.; k += .5){
+        float levelZoom = k + amnt * sin(floor(k* 12.22));
+        vec2 currentUV = uv * levelZoom;
+        currentUV += (uv + currentUV) * ( k * k);
+        currentUV.x += 60. * sin( speed );
+        
+        vec2 id = floor(currentUV);
+        if((Hash21(id) > threshold * (1. - k / amnt) ) && col >= .2 * ( k - amnt / 4. ) ) {
+            col += .2;
+        }
+    }
+    
+    col = mod(col, 1.);
+    
+//    if(col > .5){
+//        col = 1.;
+//    }else{
+//        col = 0.;
+//    }
+    
+    
+    return col;
+}
 
 
+// ================
+vec4 colorSampleShift(sampler2DRect tex, vec2 uv, vec2 imgSize, float intensityShift, vec4 originalColor){
+    
+    uv = mod(uv + intensityShift * imgSize, imgSize);
+    return mix(texture2DRect(tex, uv), originalColor, 1. - intensityShift * .7);
+}
 
+
+vec4 colorStretch(sampler2DRect tex, vec2 uv, vec2 imgSize, float intensityShift, vec4 originalColor){
+    
+    uv.y = uv.y * 3.2 * intensityShift;
+    return mix(texture2DRect(tex, uv), originalColor, intensityShift);
+}
 // ================
 
 void main( void )
@@ -63,8 +108,7 @@ void main( void )
     vec2 uv_Norm = vec2(gl_TexCoord[0].st / u_resImg);
     
     vec2 uv = lateralSlider(uv_Norm);
-    vec4 colors = vec4(backgroundColor, 1.0);
-//    texture2DRect( u_tex_unit0, uv * u_resImg);
+    vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
     
 
     float prop = 0.0f;
@@ -76,6 +120,7 @@ void main( void )
     if(u_tilingType == 4)prop = CellsCheck(uv_Norm);
     if(u_tilingType == 5)prop = ImageCut(uv_Norm, u_MaskLayers + 1., u_speedLinesColumns * u_time);
     if(u_tilingType == 6 && addWavesDots(uv, 7, u_time * 2.1, u_resImg) >u_thresholdNoise) prop = 1.0f;
+    if(u_tilingType == 7)prop = area(uv_Norm, 7., u_time * u_speedLinesColumns.y, .9);
 
     
     if(prop > 0.0f){
@@ -85,22 +130,9 @@ void main( void )
 //        float newB = texture2DRect(u_tex_unit0, gl_TexCoord[0].st * 1.02f ).b;
         
         
-        colors = u_BackGrndColor;
+//        colors = u_BackGrndColor;
         
-        colors = glitchColors( u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
-        if(colors.r > .02)
-        {
-            colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
-        }else{
-
-                    colors = vec4(invertBackground, 1.0);
-        }
-
-        // glitch
-//        colors = glitchColors(u_tex_unit0, uv_Norm, 1.);
-        
-        
-        
+//        colors = glitchColors( u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
         
         
 //
@@ -129,40 +161,36 @@ void main( void )
 //        float thresholdEdge = 0.5f;
 //        if( edges.r > thresholdEdge && edges.g > thresholdEdge && edges.b > thresholdEdge )colors.rgb =  edges.rgb;
 //        colors = mix(edges, colors, 0.5);
-        
-
-        // Gradiant//
 
     }else{
         
     }
     
-    colors = glitchColors( u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
+//    colors = glitchColors( u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
+
+    // ==== texture Shift ====
+    
+    colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+    
+    
+    if(prop > 0.){
+//        colors = colorSampleShift(u_tex_unit0, gl_TexCoord[0].st, u_resImg, prop, colors);
+        colors = colorStretch(u_tex_unit0, gl_TexCoord[0].st, u_resImg, prop, colors);
+    }
+    
+    // ==== texture Shift ====
     
     if(colors.r < .02){
-        if(prop > 0.)
+        if(prop > 0.0f)
         {
-            colors = u_BackGrndColor;
+            colors *= u_BackGrndColor;
         }else{
             colors = vec4(invertBackground, 1.0);
         }
     }
     
-    if(colors.r <  .02)colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
-
-//    colors = gradiantOutline(gl_TexCoord[0].st, u_gradStart, u_gradFinish, colors, u_gradiantColor);
-    
-//        for( int i = 1; i < 2; i++){
-//
-//            float iSpeed = mod(i, 2.) + mod(i, u_time);
-//            float iSine = i * sin((u_time + i) );
-////            if( mod(i, 2.) == 0) iSine = i * cos((u_time + iSpeed));
-//            vec4 newC = glitchColors( u_tex_unit0, gl_TexCoord[0].st, iSine);
-//            colors.rgba = mix(newC, colors, colors - newC);
-//
-//        }
-    
-
+//    if(colors.r <  .02)
+        
     
     gl_FragColor = colors;
 }

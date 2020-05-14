@@ -40,6 +40,7 @@ class GlitchManager{
     ofParameter < ofVec4f > props;
     ofParameter < float > alphaGradiant;
     ofParameter < ofColor > gradiantColor;
+    ofParameter < bool > continuousMosh;
     void initGui();
     void drawGUI(){if(guiON)gui.draw();}
     
