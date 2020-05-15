@@ -6,7 +6,7 @@ void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_VERBOSE);
 
-	image.loadImage("Textures/TheDavidFace.png");
+	image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
 
 	font.loadFont(ofToDataPath( "Fonts/DIN.otf"), 8 );
     

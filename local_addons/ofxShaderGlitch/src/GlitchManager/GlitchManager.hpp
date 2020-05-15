@@ -41,6 +41,7 @@ class GlitchManager{
     ofParameter < float > alphaGradiant;
     ofParameter < ofColor > gradiantColor;
     ofParameter < bool > continuousMosh;
+    
     void initGui();
     void drawGUI(){if(guiON)gui.draw();}
     

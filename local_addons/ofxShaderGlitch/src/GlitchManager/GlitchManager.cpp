@@ -34,7 +34,7 @@ void GlitchManager::initGui(){
     typeTiling.setName("tylingType");
     
     //
-    typeTiling.add(type.set("type of tyling", 0, 0, 7));
+    typeTiling.add(type.set("type of tyling", 0, 0, 8));
     typeTiling.add(speedMoves.set("Speed", {1,1}, {-10, -10}, {10,10}));
     typeTiling.add(amntLinesColumns.set("amnt of Lines // Columns", {2,2}, {1,1}, {300,300}));
     gui.add(props.set("testGradSize", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0,0,0,0), ofVec4f(1,1,1,1)));

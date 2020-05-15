@@ -19,8 +19,8 @@ vec4 Blur(sampler2DRect imageTexture, vec2 uv, vec2 imgRes, vec2 kernelSize){
     //the direction of our blur
     //(1.0, 0.0) -> x-axis blur
     //(0.0, 1.0) -> y-axis blur
-    float hstep = 1.0;
-    float vstep = 1.0;
+    float hstep = u_ThicknessEdge.x * 2.;
+    float vstep = u_ThicknessEdge.y * 2.;
     
     //apply blurring, using a 9-tap filter with predefined gaussian weights
     
@@ -125,6 +125,7 @@ vec4 sobel(sampler2DRect imageTexture, vec2 uv, vec2 imgRes){
     vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
 
     return vec4( 1.0 - sobel.rgb, 1.0 );
+    
 }
 
 vec4 edgeDetection(sampler2DRect imageTexture, vec2 uv, vec2 imgRes){
@@ -158,9 +159,9 @@ vec4 edgeDetection(sampler2DRect imageTexture, vec2 uv, vec2 imgRes){
 //            }
 //        }
 //        if(isNeighBoorStrong)sobel = vec4(strong);
-//        
+//
 //    }
-//    
+
     
     return sobel;
 }
