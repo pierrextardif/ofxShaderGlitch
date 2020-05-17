@@ -54,6 +54,10 @@ class GlitchManager{
     CellManager cells;
     EdgesDetection edges;
     
+    ofFbo f;
+    ofxAutoReloadedShader gaussian;
+    bool nonMaxAndContinuity;
+    
 };
 
 #endif /* GlitchManager_hpp */

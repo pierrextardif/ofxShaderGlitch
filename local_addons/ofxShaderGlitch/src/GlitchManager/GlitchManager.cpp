@@ -22,6 +22,10 @@ void GlitchManager::setup(){
     
     
     resImg = ofVec2f(ofGetWidth(), ofGetHeight());
+    f.allocate(resImg.x, resImg.y);
+    gaussian.load("../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian");
+    
+    nonMaxAndContinuity = false;
 
 }
 
@@ -48,6 +52,19 @@ void GlitchManager::initGui(){
 //--------------------------------------------------------------
 void GlitchManager::begin(){
     
+    
+    f.begin();
+    ofClear(0);
+    gaussian.begin();
+    
+}
+
+//--------------------------------------------------------------
+void GlitchManager::end(){
+    gaussian.end();
+    f.end();
+    
+    
     shader.begin();
     shader.setUniform2f("u_resImg", resImg);
     shader.setUniform1i("u_tilingType", type);
@@ -58,13 +75,11 @@ void GlitchManager::begin(){
     shader.setUniform1f("u_alphaGradiant", alphaGradiant);
     shader.setUniform4f("u_gradiantColor", gradiantColor->r / 255., gradiantColor->g  / 255., gradiantColor->b  / 255., gradiantColor->a / 255.);
     shader.setUniform1f("u_continuousMosh", (continuousMosh == true) ? 1.:0.);
+    shader.setUniform1f("u_maxContinuity", (nonMaxAndContinuity == true) ? 1.:0.);
     cells.addUniforms();
     edges.addUniforms();
     
-}
-
-//--------------------------------------------------------------
-void GlitchManager::end(){
+    f.draw(0,0);
     shader.end();
 }
 

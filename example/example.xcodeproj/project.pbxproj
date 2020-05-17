@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		111A4D7670FFBAF605583DA0 /* main.vert in Sources */ = {isa = PBXBuildFile; fileRef = 284D741ADDAB0930347B1AD5 /* main.vert */; };
+		12E535ABE1AFE6B0C675427E /* gaussian.vert in Sources */ = {isa = PBXBuildFile; fileRef = 22410DFDB11302A0698D677B /* gaussian.vert */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
 		30CB80A726F4EAD8EE8F679B /* CellManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7263CDBCD21F985F487472FD /* CellManager.cpp */; };
 		417FEE24B5F129400075BC13 /* Gradient.glsl in Sources */ = {isa = PBXBuildFile; fileRef = 82DE51CC16C659C12E4783B4 /* Gradient.glsl */; };
@@ -29,6 +30,7 @@
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
+		EE68306185EFD9FF907DACCB /* gaussian.frag in Sources */ = {isa = PBXBuildFile; fileRef = BDFFFE19529B39A7AD40B6C1 /* gaussian.frag */; };
 		F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */; };
 		F59784BA1E7AD9D527520AF0 /* GlitchManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FFB6C29DCA3CF79AB8473C8 /* GlitchManager.cpp */; };
 		F753E0A83C8F9F712BEAE007 /* ofxAutoReloadedShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A84CCC1D7F7F4B26074EED4 /* ofxAutoReloadedShader.cpp */; };
@@ -54,6 +56,7 @@
 		17E65988300FBD9AAA2CD0CA /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxGui.h; path = ../../../addons/ofxGui/src/ofxGui.h; sourceTree = SOURCE_ROOT; };
 		181D363B6DD54D1FA6309C43 /* ofxColorPicker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxColorPicker.cpp; path = ../../../addons/ofxGui/src/ofxColorPicker.cpp; sourceTree = SOURCE_ROOT; };
 		1C0DA2561397A7DE0246858B /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxGuiGroup.h; path = ../../../addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
+		22410DFDB11302A0698D677B /* gaussian.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; name = gaussian.vert; path = ../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian.vert; sourceTree = SOURCE_ROOT; };
 		2834D88A62CD23F3DE2C47D1 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxButton.h; path = ../../../addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
 		284D741ADDAB0930347B1AD5 /* main.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; name = main.vert; path = ../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/main.vert; sourceTree = SOURCE_ROOT; };
 		44B351490B620D04E1E7C52D /* ofxInputField.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxInputField.cpp; path = ../../../addons/ofxGui/src/ofxInputField.cpp; sourceTree = SOURCE_ROOT; };
@@ -81,6 +84,7 @@
 		B4C658781E6BB8B61384A4C7 /* ofxAutoReloadedShader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxAutoReloadedShader.h; path = ../local_addons/ofxAutoReloadedShader/src/ofxAutoReloadedShader.h; sourceTree = SOURCE_ROOT; };
 		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
 		BA274EC7A169D538BD43A5D8 /* ofxGuiUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxGuiUtils.h; path = ../../../addons/ofxGui/src/ofxGuiUtils.h; sourceTree = SOURCE_ROOT; };
+		BDFFFE19529B39A7AD40B6C1 /* gaussian.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; name = gaussian.frag; path = ../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian.frag; sourceTree = SOURCE_ROOT; };
 		BFA1DA747A9FB61FF2DAD7F5 /* GlitchManager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = GlitchManager.hpp; path = ../local_addons/ofxShaderGlitch/src/GlitchManager/GlitchManager.hpp; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -325,6 +329,15 @@
 			name = local_addons;
 			sourceTree = "<group>";
 		};
+		88B1F4010988EA391D9C0B1A /* Gaussian */ = {
+			isa = PBXGroup;
+			children = (
+				BDFFFE19529B39A7AD40B6C1 /* gaussian.frag */,
+				22410DFDB11302A0698D677B /* gaussian.vert */,
+			);
+			name = Gaussian;
+			sourceTree = "<group>";
+		};
 		8E00A84129613ED9F395F131 /* GlitchManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				12195F673F1229B3F16315F9 /* EdgeDetection.glsl */,
+				88B1F4010988EA391D9C0B1A /* Gaussian */,
 				82DE51CC16C659C12E4783B4 /* Gradient.glsl */,
 				4D8937457C6DF7FF1843783E /* cells.glsl */,
 				D5AA7DF3B1D159B334E8D62B /* glitch.glsl */,
@@ -835,6 +849,8 @@
 				7F5A7CC266D0597D0D0928B8 /* EdgesDetection.cpp in Sources */,
 				F59784BA1E7AD9D527520AF0 /* GlitchManager.cpp in Sources */,
 				B04ACF9327E322C169CA04B2 /* EdgeDetection.glsl in Sources */,
+				EE68306185EFD9FF907DACCB /* gaussian.frag in Sources */,
+				12E535ABE1AFE6B0C675427E /* gaussian.vert in Sources */,
 				417FEE24B5F129400075BC13 /* Gradient.glsl in Sources */,
 				73D959F489941339BD6E4A6B /* cells.glsl in Sources */,
 				6CFA81D57B7606DBC315EEF2 /* glitch.glsl in Sources */,
@@ -881,6 +897,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
@@ -913,6 +930,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -960,6 +978,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1003,6 +1022,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
@@ -1035,6 +1055,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -1071,6 +1092,7 @@
 					../local_addons/ofxShaderGlitch/src/GlitchManager/CellManager,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/EdgesDetection,
 					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders,
+					../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";

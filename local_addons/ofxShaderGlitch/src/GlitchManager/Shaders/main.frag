@@ -21,6 +21,8 @@ uniform float               u_continuousMosh;
 uniform vec4                u_BackGrndColor;
 uniform vec4                u_gradiantColor;
 
+uniform float u_maxContinuity;
+
 #pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
 // Masks
 #pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/cells.glsl"
@@ -51,6 +53,8 @@ vec2 lateralSlider(vec2 uv){
 
 // ================
 
+
+
 // ================
 
 void main( void )
@@ -66,26 +70,27 @@ void main( void )
 
     float prop = 0.;
     vec3 stretch = vec3(0.);
-    
-    
-    if(u_tilingType == 0)prop = LinesCheck(uv_Norm);
-    if(u_tilingType == 1)prop = ColumnsCheck(uv_Norm);
-    if(u_tilingType == 2)prop = ColOrLineCheck(uv_Norm);
-    if(u_tilingType == 3)prop = ColAndLineCheck(uv_Norm);
-    if(u_tilingType == 4)prop = CellsCheck(uv_Norm);
-    if(u_tilingType == 5)prop = ImageCut(uv_Norm, u_MaskLayers + 1., u_speedLinesColumns * u_time);
-    if(u_tilingType == 6 && addWavesDots(uv, 7, u_time * 2.1, u_resImg) >u_thresholdNoise) prop = 1.0f;
-    if(u_tilingType == 7)prop = area(uv_Norm, 7., u_time * u_speedLinesColumns.y, .95);
-    if(u_tilingType == 8){
-        stretch = areaDegrade(uv_Norm, 7., u_time * u_speedLinesColumns.y + u_speedLinesColumns.x, .95);
-        prop = stretch.x;
-
-    }
+//
+//
+//    if(u_tilingType == 0)prop = LinesCheck(uv_Norm);
+//    if(u_tilingType == 1)prop = ColumnsCheck(uv_Norm);
+//    if(u_tilingType == 2)prop = ColOrLineCheck(uv_Norm);
+//    if(u_tilingType == 3)prop = ColAndLineCheck(uv_Norm);
+//    if(u_tilingType == 4)prop = CellsCheck(uv_Norm);
+//    if(u_tilingType == 5)prop = ImageCut(uv_Norm, u_MaskLayers + 1., u_speedLinesColumns * u_time);
+//    if(u_tilingType == 6 && addWavesDots(uv, 7, u_time * 2.1, u_resImg) >u_thresholdNoise) prop = 1.0f;
+//    if(u_tilingType == 7)prop = area(uv_Norm, 7., u_time * u_speedLinesColumns.y, .95);
+//    if(u_tilingType == 8){
+//        stretch = areaDegrade(uv_Norm, 7., u_time * u_speedLinesColumns.y + u_speedLinesColumns.x, .95);
+//        prop = stretch.x;
+//
+//    }
     
     
 
     // ===========================
     //edges
+    float edge = Sobel( u_tex_unit0, gl_TexCoord[0].st, (u_maxContinuity == 1.0)?true:false);
 //    vec4 edge = edgeDetection( u_tex_unit0, gl_TexCoord[0].st, u_resImg);
 //    if(edge.r == 1.0 && edge.g == 1.0 && edge.b == 1.0 )colors.rgb = vec3(1.0);
 //        if(averageEdge > 0.9)
@@ -112,6 +117,6 @@ void main( void )
         // ==== texture Shift ====
         
     }
-    gl_FragColor = colors;
+    gl_FragColor = vec4(vec3(edge), 1.0);
 }
 

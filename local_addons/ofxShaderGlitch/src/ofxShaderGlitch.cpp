@@ -40,4 +40,8 @@ void ofxShaderGlitch::drawGUI(){
 //--------------------------------------------------------------
 void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs){
     if(keyArgs.key == 'g')glitch.guiON = !glitch.guiON;
+    if(keyArgs.key == 'c'){
+        glitch.nonMaxAndContinuity = !glitch.nonMaxAndContinuity;
+        cout << " maxContinuity = " << ofToString(glitch.nonMaxAndContinuity) << endl;
+    }
 }

@@ -1,167 +1,134 @@
-// coming from https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123
 
-uniform vec2 u_ThicknessEdge;
+// ==== Canny Edge ==== //
+#define PI      3.14159265358979323
+#define PI_2    1.57079632679
+#define PI_4    0.78539816339
+#define PI_8    0.39269908169
 
-#define M_PI 3.1415926535897932
 
-// X directional search matrix.
-mat3 GX = mat3( -1.0, 0.0, 1.0,
+#define PI_7_8  2.7488936
+#define PI_3_8  1.178097
+#define PI_5_8  1.9634954
+
+float highThreshold = .35;
+float lowThreshold = .1;
+
+float GREYCol(vec3 rgb){
+    return .3086 * rgb.r + .6094 * rgb.g + 0.0820 * rgb.b;
+    
+}
+
+float GREYTex(sampler2DRect tex, vec2 uv){
+//    vec3 rgb = Gaussian5_5(tex, uv).rgb;
+    vec3 rgb = texture2DRect(tex, uv).rgb;
+    return GREYCol(rgb);
+    
+}
+
+vec2  offsetTheta(float val){
+    
+    vec2 dir = vec2(0.);
+    if(val == 0.)dir = vec2(0., 1.);
+    if(val == 1.)dir = vec2(1., 0.);
+    if(val == 2.)dir = vec2(1., -1.);
+    if(val == 3.)dir = vec2(1., 1.);
+    
+    return dir;
+}
+
+vec2 convertAngle(float theta){
+    
+    vec2 offset = vec2(0.);
+    // direction vertical neighboor
+    if( ( theta >= PI_3_8 && theta < PI_5_8 ) || (theta >= -PI_5_8 && theta < - PI_3_8) )offset = vec2(0., 1.);
+//    // direction horizontal neighboor
+    if( ( theta >= -PI_8 && theta < PI_8 )  || (theta >= PI_7_8 && theta < PI_7_8 + PI_4) )offset = vec2(1., 0.);
+    //first diagonal //
+    if( (theta >= PI_8 && theta < PI_3_8 )  || (theta >= -PI_7_8 && theta < -PI_5_8) )offset = vec2(-1., -1.);
+    //second diagonal \\
+    if( ( theta >= -PI_3_8 && theta < -PI_8 ) || ( theta >= PI_3_8 && theta < PI_7_8) )offset = vec2(1., -1.);
+    
+    return offset;
+}
+
+vec3 debugAngle(vec2 offset){
+    vec3 newOffset = vec3(offset, 0.);
+    if(offset == vec2(-1., -1.))newOffset = vec3(0., 0., 1.);
+    if(offset == vec2(1., -1.))newOffset = vec3(1., 1., 0.);
+    
+    return newOffset;
+}
+
+
+mat3 Gx = mat3( -1.0, 0.0, 1.0,
                 -2.0, 0.0, 2.0,
                 -1.0, 0.0, 1.0 );
-// Y directional search matrix.
-mat3 GY =  mat3( 1.0,  2.0,  1.0,
+
+mat3 Gy =  mat3( 1.0,  2.0,  1.0,
                  0.0,  0.0,  0.0,
                 -1.0, -2.0, -1.0 );
 
-vec4 Blur(sampler2DRect imageTexture, vec2 uv, vec2 imgRes, vec2 kernelSize){
-    vec4 sum = vec4(0.0);
-    
-    //the direction of our blur
-    //(1.0, 0.0) -> x-axis blur
-    //(0.0, 1.0) -> y-axis blur
-    float hstep = u_ThicknessEdge.x * 2.;
-    float vstep = u_ThicknessEdge.y * 2.;
-    
-    //apply blurring, using a 9-tap filter with predefined gaussian weights
-    
-    sum += texture2DRect(imageTexture, vec2(uv.x - 4.0 * kernelSize.x * hstep, uv.y - 4.0 * kernelSize.y * vstep)) * 0.0162162162;
-    sum += texture2DRect(imageTexture, vec2(uv.x - 3.0 * kernelSize.x * hstep, uv.y - 3.0 * kernelSize.y * vstep)) * 0.0540540541;
-    sum += texture2DRect(imageTexture, vec2(uv.x - 2.0 * kernelSize.x * hstep, uv.y - 2.0 * kernelSize.y * vstep)) * 0.1216216216;
-    sum += texture2DRect(imageTexture, vec2(uv.x - 1.0 * kernelSize.x * hstep, uv.y - 1.0 * kernelSize.y * vstep)) * 0.1945945946;
-    
-    sum += texture2DRect(imageTexture, vec2(uv.x, uv.y)) * 0.2270270270;
-    
-    sum += texture2DRect(imageTexture, vec2(uv.x + 1.0 * kernelSize.x * hstep, uv.y + 1.0 * kernelSize.y * vstep)) * 0.1945945946;
-    sum += texture2DRect(imageTexture, vec2(uv.x + 2.0 * kernelSize.x * hstep, uv.y + 2.0 * kernelSize.y * vstep)) * 0.1216216216;
-    sum += texture2DRect(imageTexture, vec2(uv.x + 3.0 * kernelSize.x * hstep, uv.y + 3.0 * kernelSize.y * vstep)) * 0.0540540541;
-    sum += texture2DRect(imageTexture, vec2(uv.x + 4.0 * kernelSize.x * hstep, uv.y + 4.0 * kernelSize.y * vstep)) * 0.0162162162;
+float Sobel(sampler2DRect tex, vec2 uv, bool NonMaxAndContinuity){
 
-    //discard alpha for our simple demo, multiply by vertex color and return
-    return sum;
-}
-
-vec4 sobelEdge(sampler2DRect imageTexture, vec2 uv, vec2 imgRes)
-{
-    
-    vec2 kernelSize = vec2(3);
-    vec4  fSumX = vec4( 0.0,0.0,0.0,0.0 );
-    vec4  fSumY = vec4( 0.0,0.0,0.0,0.0 );
-    vec4 fTotalSum = vec4( 0.0,0.0,0.0,0.0 );
-    float fXIndex = uv.x;
-    float fYIndex = uv.y;
-
-    /* image boundaries Top, Bottom, Left, Right pixels*/
-    if( ( fYIndex > 1.0 || fYIndex < imgRes.y - 1.0 ||
-            fXIndex > 1.0 || fXIndex < imgRes.x - 1.0 ))
-    {
-        // X Directional Gradient calculation.
-        for(float I=-1.0; I<=1.0; I = I + 1.0)
-        {
-            for(float J=-1.0; J<=1.0; J = J + 1.0)
-            {
-                float fTempX = ( fXIndex + I + 1.0 ) ;
-                float fTempY = ( fYIndex + J + 1.0 ) ;
-                
-//                vec4 fTempSumX = texture2DRect( imageTexture, vec2( fTempX, fTempY ));
-                vec4 fTempSumX = Blur(imageTexture,vec2(fTempX, fTempY), imgRes, kernelSize);
-                fSumX = fSumX + ( fTempSumX * vec4( GX[int(I+1.0)][int(J+1.0)],
-                                                    GX[int(I+1.0)][int(J+1.0)],
-                                                    GX[int(I+1.0)][int(J+1.0)],
-                                                    GX[int(I+1.0)][int(J+1.0)]));
+    float col = 0.;
+    vec2 thetaOffsetDir = vec2(0.);
+    float strength = 0.;
+    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
+        
+        int i,j;
+        float colX = 0.;
+        float colY = 0.;
+        for(i = -1; i <=1; i++){
+            for(j = -1; j <=1; j++){
+                colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
+                colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
             }
         }
+        
+        strength = pow(colX * colX + colY * colY, (.5));
+        thetaOffsetDir = convertAngle(atan(colY / colX));
+    }
+    
+    
+    if(strength >= highThreshold)col = 1.0;
+    if(strength < lowThreshold){
+        col = 0.;
+    }
+    if(NonMaxAndContinuity){
+        if((strength >= lowThreshold && strength < highThreshold)  ){
+            bool isNeighBoorStrong = false;
 
-        { // Y Directional Gradient calculation.
-            for(float I=-1.0; I<=1.0; I = I + 1.0)
-            {
-                for(float J=-1.0; J<=1.0; J = J + 1.0)
-                {
-                    float fTempX = ( fXIndex + I + 1.0 );
-                    float fTempY = ( fYIndex + J + 1.0 );
-
-//                    vec4 fTempSumY = texture2DRect( imageTexture, vec2( fTempX, fTempY ));
-                    vec4 fTempSumY = Blur(imageTexture,vec2(fTempX, fTempY), imgRes, kernelSize);
-                    fSumY = fSumY + ( fTempSumY * vec4( GY[int(I+1.0)][int(J+1.0)],
-                                                        GY[int(I+1.0)][int(J+1.0)],
-                                                        GY[int(I+1.0)][int(J+1.0)],
-                                                        GY[int(I+1.0)][int(J+1.0)]));
+            float neighboorStrength = 0.;
+            int k = -1;
+            for(k = -1; k <=1; k += 2){
+                vec2 uvNeighboor = uv + thetaOffsetDir * k;
+                
+                int i,j;
+                float colX = 0.;
+                float colY = 0.;
+                for(i = -1; i <=1; i++){
+                    for(j = -1; j <=1; j++){
+                        colX += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gx[i+1][j+1]);
+                        colY += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gy[i+1][j+1]);
+                    }
                 }
+                
+                neighboorStrength = pow(colX * colX + colY * colY, .5);
+                if(neighboorStrength > highThreshold)isNeighBoorStrong=true;
+                
             }
-            // Combine X Directional and Y Directional Gradient.
-            vec4 fTem = fSumX * fSumX + fSumY * fSumY;
-            fTotalSum = sqrt( fTem );
+            if( (isNeighBoorStrong || col == 1.) && neighboorStrength < strength ){
+
+//            if( isNeighBoorStrong || (col == 1. && neighboorStrength < strength) ){
+                col = 1.0;
+            }else{
+                col = 0.;
+            }
+            
         }
     }
-    return fTotalSum;
+    
+    return col;
 }
 
-void make_kernel(inout vec4 n[9], sampler2DRect tex, vec2 coord, vec2 imgRes)
-{
-    float w = 1.0 / imgRes.x;
-    float h = 1.0 / imgRes.y;
-    
-    
-    vec2 kernelSize = vec2(2);
-
-    n[0] = Blur(tex, coord + vec2( -w, -h), imgRes, kernelSize);
-    n[1] = Blur(tex, coord + vec2(0.0, -h), imgRes, kernelSize);
-    n[2] = Blur(tex, coord + vec2(  w, -h), imgRes, kernelSize);
-    n[3] = Blur(tex, coord + vec2( -w, 0.0), imgRes, kernelSize);
-    n[4] = Blur(tex, coord, imgRes, kernelSize);
-    n[5] = Blur(tex, coord + vec2(  w, 0.0), imgRes, kernelSize);
-    n[6] = Blur(tex, coord + vec2( -w, h), imgRes, kernelSize);
-    n[7] = Blur(tex, coord + vec2(0.0, h), imgRes, kernelSize);
-    n[8] = Blur(tex, coord + vec2(  w, h), imgRes, kernelSize);
-
-
-}
-
-vec4 sobel(sampler2DRect imageTexture, vec2 uv, vec2 imgRes){
-    vec4 n[9];
-    make_kernel( n, imageTexture, uv, imgRes);
-
-    vec4 sobel_edge_h = n[2] + (2.0*n[5]) + n[8] - (n[0] + (2.0*n[3]) + n[6]);
-      vec4 sobel_edge_v = n[0] + (2.0*n[1]) + n[2] - (n[6] + (2.0*n[7]) + n[8]);
-    vec4 sobel = sqrt((sobel_edge_h * sobel_edge_h) + (sobel_edge_v * sobel_edge_v));
-
-    return vec4( 1.0 - sobel.rgb, 1.0 );
-    
-}
-
-vec4 edgeDetection(sampler2DRect imageTexture, vec2 uv, vec2 imgRes){
-    vec4 fTotalSum = vec4(0);
-    
-//    vec4 averageBlurredFrag = Blur(imageTexture, uv, imgRes, vec2(5));
-    
-    
-    vec4 sobel = sobelEdge(imageTexture, uv, imgRes);
-//    vec4 sobel = sobel(imageTexture, uv, imgRes);
-    
-    float highThreshold = 0.15;
-    float lowThreshold = 0.01;
-    
-    float strong = 1.0;
-    float weak = 0.1;
-    
-    
-    if(sobel.r > highThreshold || sobel.g > highThreshold || sobel.b > highThreshold)sobel = vec4(strong);
-//    if(sobel.r < lowThreshold && sobel.g < lowThreshold   && sobel.b < lowThreshold){
-//        sobel = vec4(weak);
-//        bool isNeighBoorStrong = false;
-//        for( int i = -1; i < 1; i++){
-//            for( int j = -1; j < 1; j++){
-//                vec4 sobelNeighboor = sobelEdge(imageTexture, vec2(uv.x+i, uv.y +j), imgRes);
-//                if(     sobelNeighboor.r > highThreshold
-//                   &&   sobelNeighboor.g > highThreshold
-//                   &&   sobelNeighboor.b > highThreshold){
-//                    isNeighBoorStrong = true;
-//                }
-//            }
-//        }
-//        if(isNeighBoorStrong)sobel = vec4(strong);
-//
-//    }
-
-    
-    return sobel;
-}
+// ==== Canny Edge ==== //
