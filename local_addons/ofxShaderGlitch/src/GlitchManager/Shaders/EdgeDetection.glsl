@@ -68,7 +68,7 @@ mat3 Gy =  mat3( 1.0,  2.0,  1.0,
                  0.0,  0.0,  0.0,
                 -1.0, -2.0, -1.0 );
 
-float Sobel(sampler2DRect tex, vec2 uv, bool NonMaxAndContinuity){
+float edgeDetection(sampler2DRect tex, vec2 uv, bool NonMaxAndContinuity){
 
     float col = 0.;
     vec2 thetaOffsetDir = vec2(0.);

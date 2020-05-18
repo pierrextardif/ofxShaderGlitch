@@ -18,9 +18,6 @@
 // Cells
 #include "CellManager/CellManager.hpp"
 
-// Edges
-#include "EdgesDetection/EdgesDetection.hpp"
-
 class GlitchManager{
     
     public :
@@ -52,7 +49,6 @@ class GlitchManager{
     ofVec2f resImg;
     ofxAutoReloadedShader shader;
     CellManager cells;
-    EdgesDetection edges;
     
     ofFbo f;
     ofxAutoReloadedShader gaussian;

@@ -15,16 +15,17 @@ void GlitchManager::setup(){
     shader.setMillisBetweenFileCheck(200);
     
     cells.shader = &shader;
-    edges.shader = &shader;
     
     gui.add(cells.cellGroup);
-    gui.add(edges.edgeGroup);
     
     
     resImg = ofVec2f(ofGetWidth(), ofGetHeight());
+    
+    // edge detection : gaussian
     f.allocate(resImg.x, resImg.y);
     gaussian.load("../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian");
     
+    //edge detection non maximum / continuity
     nonMaxAndContinuity = false;
 
 }
@@ -37,7 +38,6 @@ void GlitchManager::initGui(){
     
     typeTiling.setName("tylingType");
     
-    //
     typeTiling.add(type.set("type of tyling", 0, 0, 8));
     typeTiling.add(speedMoves.set("Speed", {1,1}, {-10, -10}, {10,10}));
     typeTiling.add(amntLinesColumns.set("amnt of Lines // Columns", {2,2}, {1,1}, {300,300}));
@@ -76,8 +76,8 @@ void GlitchManager::end(){
     shader.setUniform4f("u_gradiantColor", gradiantColor->r / 255., gradiantColor->g  / 255., gradiantColor->b  / 255., gradiantColor->a / 255.);
     shader.setUniform1f("u_continuousMosh", (continuousMosh == true) ? 1.:0.);
     shader.setUniform1f("u_maxContinuity", (nonMaxAndContinuity == true) ? 1.:0.);
+    shader.setUniform1f("u_time", ofGetElapsedTimef());
     cells.addUniforms();
-    edges.addUniforms();
     
     f.draw(0,0);
     shader.end();

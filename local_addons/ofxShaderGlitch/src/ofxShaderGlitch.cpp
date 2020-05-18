@@ -28,7 +28,7 @@ void ofxShaderGlitch::end(){
 //--------------------------------------------------------------
 void ofxShaderGlitch::addUniforms(){
  
-    glitch.setUniform1f("u_time", ofGetElapsedTimef() );
+//    glitch.setUniform1f("u_time", sin(ofGetElapsedTimef()) );
 
 }
 
