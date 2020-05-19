@@ -141,6 +141,67 @@ float getLuminance(vec3 rgb){
 
 // ================
 
+float doInnerFlip(vec2 uvNorm){
+    vec2 inside = uvNorm;
+    
+    float prop = 0.;
+    if(u_gradStart.x < inside.x && inside.x < u_gradFinish.x && u_gradStart.y < inside.y && inside.y < u_gradFinish.y){
+        prop = 1.0;
+    }
+    
+    
+    return prop;
+}
+
+vec4 texFlipV(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool horizontal, bool addGradiant){
+    vec4 colors = vec4(0.);
+    
+    
+    vec2 pos = floor(uvNorms * u_amntLinesColumns);
+    
+    if(u_gradStart.x < uvNorms.x && uvNorms.x < u_gradFinish.x && u_gradStart.y < uvNorms.y && uvNorms.y < u_gradFinish.y){
+        
+        vec2 newUVs = uv;
+        if(mod(pos.y, 2.) == 0.){
+            if(horizontal){
+                newUVs = vec2(u_resImg - uv);
+            }else{
+                newUVs = vec2(u_resImg.x - uv.x, uv.y);
+            }
+        }
+        
+        colors = texture2DRect(tex, newUVs);
+        if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+    }
+    
+    return colors;
+    
+}
+
+vec4 texFlipH(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool vertical, bool addGradiant){
+    vec4 colors = vec4(0.);
+    
+    
+    vec2 pos = floor(uvNorms * u_amntLinesColumns);
+    
+    if(u_gradStart.x < uvNorms.x && uvNorms.x < u_gradFinish.x && u_gradStart.y < uvNorms.y && uvNorms.y < u_gradFinish.y){
+        
+        vec2 newUVs = uv;
+        if(mod(pos.x, 2.) == 0.){
+            if(vertical){
+                newUVs = vec2(u_resImg - uv);
+            }else{
+                newUVs = vec2(uv.x, u_resImg.y - uv.y);
+            }
+        }
+        
+        colors = texture2DRect(tex, newUVs);
+        if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+    }
+    
+    return colors;
+    
+}
 
 
 // ================
@@ -151,7 +212,7 @@ void main( void )
     
     vec2 uv = lateralSlider(uv_Norm);
     vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
-    colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+//    colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
     
     
 
@@ -172,6 +233,7 @@ void main( void )
         prop = stretch.x;
 
     }
+    if(u_tilingType == 9)prop = doInnerFlip(uv_Norm);
     
     
 
@@ -187,20 +249,26 @@ void main( void )
     if(prop > 0.0f){
         
         // ==== glitch ==== //
-        
-//        colors = glitchColors(u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
-        
+//        colors = glitchColors(u_tex_unit0, gl_TexCoord[0].st, sin(u_time), 1. - prop);
         // ==== glitch ==== //
 
-        // ==== texture Shift ====
+        // ==== texture Shift ==== //
 //        colors = colorSampleShift(u_tex_unit0, gl_TexCoord[0].st, u_resImg, prop, colors);
-        
 //        colors = colorStretch(u_tex_unit0, gl_TexCoord[0].st, u_resImg, prop, stretch.yz, colors);
         
-        // ==== texture Shift ====
+        
+        // ==== texture Shift ==== //
+        
+        // === texture Flip Inbound ==== //
+        
+//        colors = texFlipV(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, true, true);
+        colors = texFlipH(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, true, true);
+        
+        // === texture Flip Inbound ==== //
         
         // ==== stripes ==== //
-        colors.rgb = stripes(uv_Norm.x, u_time * 4., .5 + .1 * sin(u_time),  true);
+//        colors.rgb = stripes(uv_Norm.x, u_time * 4., .5 + .1 * sin(u_time),  true);
+        // ==== stripes ==== //
         
     }
     
