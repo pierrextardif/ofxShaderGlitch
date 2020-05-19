@@ -1,4 +1,5 @@
 
+// ==== area detection ==== //
 float area(vec2 uv, float amnt, float u_time, float threshold){
     float col = 0.;
     
@@ -12,7 +13,7 @@ float area(vec2 uv, float amnt, float u_time, float threshold){
         float levelZoom = k + amnt * sin(floor(k* 12.22));
         vec2 currentUV = uv * levelZoom;
         currentUV += (uv + currentUV) * ( k * k);
-        currentUV.x += 60. * sin( speed );
+        currentUV.x += 60. + 10. * ( speed );
         
         vec2 id = floor(currentUV);
         if((Hash21(id) > threshold * (1. - k / amnt) ) && col >= .2 * ( k - amnt / 4. ) ) {
@@ -25,7 +26,6 @@ float area(vec2 uv, float amnt, float u_time, float threshold){
     return col;
 }
 
-
 vec3 areaDegrade(vec2 uv, float amnt, float u_time, float threshold){
     vec3 col = vec3(0.);
     
@@ -33,6 +33,7 @@ vec3 areaDegrade(vec2 uv, float amnt, float u_time, float threshold){
     
     
     float speed = u_time * 0.05;
+    
     if(u_continuousMosh != 1.)speed = floor(u_time);
     float passes = 0.;
     
@@ -40,7 +41,7 @@ vec3 areaDegrade(vec2 uv, float amnt, float u_time, float threshold){
         float levelZoom = k + amnt * sin(floor(k* 12.22));
         vec2 currentUV = uv * levelZoom;
         currentUV += (uv + currentUV) * ( k * k);
-        currentUV.x += 60. * sin( speed );
+        currentUV.x += 60. * sin(speed);
         
         vec2 id = floor(currentUV);
         vec2 f = fract(currentUV);
@@ -77,3 +78,39 @@ vec3 areaDegrade(vec2 uv, float amnt, float u_time, float threshold){
     
     return col;
 }
+// ==== area detection ==== //
+
+// ==== stripes ==== //
+
+vec3 stripes(float coord, float speed, float threshold, bool flicker){
+    
+    vec3 cols = vec3(0.);
+    
+    
+    int k;
+    int amnt = 2;
+    for(k = 2; k <= 2 + amnt; k += 1){
+        float index = k * 6.;
+        float speedInterval = floor(coord * index + amnt);
+        float dir = Hash21(vec2(speedInterval));
+        if(dir > .5)speedInterval = - dir * 3.;
+        if(dir < .5)speedInterval = dir * 3.;
+        float interval = floor(coord * index + speed * speedInterval  );
+        
+        
+        vec3 rndRgb = vec3(Hash21(vec2(interval)));
+        if(flicker){
+            rndRgb.g = Hash21(vec2(rndRgb.r + speed * speedInterval));
+            rndRgb.b = Hash21(vec2(rndRgb.g + speed * speedInterval));
+        }else{
+            rndRgb.g = Hash21(vec2(rndRgb.r));
+            rndRgb.b = Hash21(vec2(rndRgb.r,rndRgb.g));
+        }
+        
+        if(rndRgb.r < threshold)cols += vec3(rndRgb.r * 4. * (.7 + .3 * abs(sin(speed)) ), rndRgb.gb) / float(amnt);
+    }
+    
+    return cols;
+}
+
+// ==== stripes ==== //

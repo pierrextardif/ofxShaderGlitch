@@ -53,12 +53,24 @@ vec2 lateralSlider(vec2 uv){
 
 // ================
 
+int convertAngleToDirection(float theta){
+    
+    int offset = -1;
+    // direction vertical neighboor
+    if( ( theta >= PI_3_8 && theta < PI_5_8 ) || (theta >= -PI_5_8 && theta < - PI_3_8) )offset = 0;
+//    // direction horizontal neighboor
+    if( ( theta >= -PI_8 && theta < PI_8 )  || (theta >= PI_7_8 && theta < PI_7_8 + PI_4) )offset = 1;
+    //first diagonal //
+    if( (theta >= PI_8 && theta < PI_3_8 )  || (theta >= -PI_7_8 && theta < -PI_5_8) )offset = 2;
+    //second diagonal \\
+    if( ( theta >= -PI_3_8 && theta < -PI_8 ) || ( theta >= PI_3_8 && theta < PI_7_8) )offset = 3;
+    
+    return offset;
+}
 
-vec2 processEdge(sampler2DRect tex, vec2 uv){
 
-    float col = 0.;
-    float angle = 0.;
-    vec2 thetaOffsetDir = vec2(0.);
+float getStrength(sampler2DRect tex, vec2 uv){
+    
     float strength = 0.;
     if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
         
@@ -73,54 +85,65 @@ vec2 processEdge(sampler2DRect tex, vec2 uv){
         }
         
         strength = pow(colX * colX + colY * colY, (.5 * abs(sin(PI_2))));
-        angle = atan(colY / colX);
-        thetaOffsetDir = convertAngle(angle);
     }
-    
-    
-    if(strength >= highThreshold)col = 1.0;
-    if(strength < lowThreshold){
-        col = 0.;
-    }
-    if((strength >= lowThreshold && strength < highThreshold)  ){
-        bool isNeighBoorStrong = false;
-        
-        float neighboorStrength = 0.;
-        float neighboorAngle = 0.;
-        int k = -1;
-        for(k = -10; k <=10; k += 2){
-            vec2 uvNeighboor = uv + thetaOffsetDir * k;
-            
-            int i,j;
-            float colX = 0.;
-            float colY = 0.;
-            for(i = -1; i <=1; i++){
-                for(j = -1; j <=1; j++){
-                    colX += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gx[i+1][j+1]);
-                    colY += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gy[i+1][j+1]);
-                }
-            }
-            
-            neighboorStrength += pow(colX * colX + colY * colY, .5);
-            neighboorAngle += atan(colY / colX);
-            if(neighboorStrength > highThreshold)isNeighBoorStrong=true;
-            
-        }
-        if( (isNeighBoorStrong || col == 1.) && neighboorStrength < strength ){
+    return strength;
+}
 
-            col = 1.0;
-        }else{
-            col = 0.;
+vec2 getAngle(sampler2DRect tex, vec2 uv){
+    
+    vec2 theta = vec2(0.);
+    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
+        
+        int i,j;
+        float colX = 0.;
+        float colY = 0.;
+        for(i = -1; i <=1; i++){
+            for(j = -1; j <=1; j++){
+                colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
+                colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
+            }
         }
-        strength *= neighboorStrength;
-        angle *= neighboorAngle;
+        
+        theta = convertAngle(atan(colY / colX));
     }
     
-    return vec2(col, angle);
+    return theta;
+}
+
+vec2 getSA(sampler2DRect tex, vec2 uv){
+    vec2 strengthTheta = vec2(0.);
+    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
+       
+       int i,j;
+       float colX = 0.;
+       float colY = 0.;
+       for(i = -1; i <=1; i++){
+           for(j = -1; j <=1; j++){
+               colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
+               colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
+           }
+       }
+       
+        strengthTheta.x = pow(colX * colX + colY * colY, (.5 * abs(sin(PI_2))));
+        strengthTheta.y = convertAngleToDirection(atan(colY / colX) );
+        
+    }
+    
+    return strengthTheta;
+}
+//
+
+// ================
+
+float getLuminance(vec3 rgb){
+    return 0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b;
 }
 
 // ================
 
+
+
+// ================
 void main( void )
 {
     
@@ -154,7 +177,7 @@ void main( void )
 
     // ===========================
     //edges
-    float edge = edgeDetection( u_tex_unit0, gl_TexCoord[0].st, (u_maxContinuity == 1.0)?true:false);
+//    float edge = edgeDetection( u_tex_unit0, gl_TexCoord[0].st, (u_maxContinuity == 1.0)?true:false);
 //    vec2 edge = processEdge( u_tex_unit0, gl_TexCoord[0].st);
     
     
@@ -165,7 +188,7 @@ void main( void )
         
         // ==== glitch ==== //
         
-        colors = glitchColors(u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
+//        colors = glitchColors(u_tex_unit0, gl_TexCoord[0].st, sin(u_time), prop);
         
         // ==== glitch ==== //
 
@@ -176,7 +199,11 @@ void main( void )
         
         // ==== texture Shift ====
         
+        // ==== stripes ==== //
+        colors.rgb = stripes(uv_Norm.x, u_time * 4., .5 + .1 * sin(u_time),  true);
+        
     }
-    gl_FragColor = vec4(colors);
+    
+    gl_FragColor = colors;
 }
 
