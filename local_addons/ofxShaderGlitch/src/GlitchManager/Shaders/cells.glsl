@@ -8,7 +8,7 @@ uniform float           u_MaskLayers;
 
 #define M_PI 3.1415926535897932
 
-// ---- Lines & clumns ---- //
+// ==== Lines & clumns ==== //
 float LinesCheck(vec2 uv_Norm){
     
     float insideLine = 0.0;
@@ -38,7 +38,7 @@ float ColAndLineCheck(vec2 uv_Norm){
 
 }
 
-// ---- Cells ---- //
+// ==== Cells ==== //
 
 float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
 
@@ -101,8 +101,74 @@ float CellsCheck(vec2 uv_Norm){
     return hexagonalCell(vec2(cellXSize, cellYSize), vec2(0.1, 0.5), u_OffsetCells);
 }
 
+// ==== Cells flip ==== //
 
-// ---- Generative Pattern 1 ---- //
+vec4 texFlipV(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool horizontal, bool addGradiant){
+    vec4 colors = vec4(0.);
+    
+    
+    vec2 pos = floor(uvNorms * u_amntLinesColumns);
+    
+    if(u_gradStart.x < uvNorms.x && uvNorms.x < u_gradFinish.x && u_gradStart.y < uvNorms.y && uvNorms.y < u_gradFinish.y){
+        
+        vec2 newUVs = uv;
+        if(mod(pos.y, 2.) == 0.){
+            if(horizontal){
+                newUVs = vec2(u_resImg - uv);
+            }else{
+                newUVs = vec2(u_resImg.x - uv.x, uv.y);
+            }
+        }
+        
+        colors = texture2DRect(tex, newUVs);
+        if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+    }
+    
+    return colors;
+    
+}
+
+vec4 texFlipH(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool vertical, bool addGradiant){
+    vec4 colors = vec4(0.);
+    
+    
+    vec2 pos = floor(uvNorms * u_amntLinesColumns);
+    
+    if(u_gradStart.x < uvNorms.x && uvNorms.x < u_gradFinish.x && u_gradStart.y < uvNorms.y && uvNorms.y < u_gradFinish.y){
+        
+        vec2 newUVs = uv;
+        if(mod(pos.x, 2.) == 0.){
+            if(vertical){
+                newUVs = vec2(u_resImg - uv);
+            }else{
+                newUVs = vec2(uv.x, u_resImg.y - uv.y);
+            }
+        }
+        
+        colors = texture2DRect(tex, newUVs);
+        if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
+    }
+    
+    return colors;
+    
+}
+
+float doInnerFlip(vec2 uvNorm){
+    vec2 inside = uvNorm;
+    
+    float prop = 0.;
+    if(u_gradStart.x < inside.x && inside.x < u_gradFinish.x && u_gradStart.y < inside.y && inside.y < u_gradFinish.y){
+        prop = 1.0;
+    }
+    
+    
+    return prop;
+}
+
+// ==== Cells flip ==== //
+
+
+// ==== Generative Pattern 1 ==== //
 
 int cutTextureFDiagonal(vec2 uv, int cutAngle, vec4 angles){
     
@@ -208,7 +274,8 @@ float ImageCut(vec2 uv, float AmntLayers, vec2 time){
 }
 
 
-// ---- Generative Pattern 2 ---- //
+// ==== Generative Pattern 2 ==== //
+
 bool addDotsWavy(vec2 uv, float probability){
     
     float preciGrid = 900.0;
@@ -271,3 +338,4 @@ float addWavesDots(vec2 uv, int amnt, float mainSpeed, vec2 precisionGrid){
     return pos;
     
 }
+
