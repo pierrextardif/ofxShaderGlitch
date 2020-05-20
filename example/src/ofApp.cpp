@@ -40,5 +40,4 @@ void ofApp::draw()
 }
 
 void ofApp::keyPressed(int key) {
-//    if(key == 'g')glitch.guiON = !glitch.guiON;
 }

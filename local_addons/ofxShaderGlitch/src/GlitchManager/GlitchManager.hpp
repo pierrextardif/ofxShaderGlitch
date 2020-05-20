@@ -18,6 +18,9 @@
 // Cells
 #include "CellManager/CellManager.hpp"
 
+// Feedback
+#include "FeedbackManager/FeedbackManager.hpp"
+
 class GlitchManager{
     
     public :
@@ -37,7 +40,7 @@ class GlitchManager{
     ofParameter < ofVec4f > props;
     ofParameter < float > alphaGradiant;
     ofParameter < ofColor > gradiantColor;
-    ofParameter < bool > continuousMosh;
+    ofParameter < bool > continuous;
     
     void initGui();
     void drawGUI(){if(guiON)gui.draw();}
@@ -47,11 +50,11 @@ class GlitchManager{
     ofxPanel gui;
     
     ofVec2f resImg;
-    ofxAutoReloadedShader shader;
+    ofxAutoReloadedShader shader, gaussian;
     CellManager cells;
+    FeedbackManager feedback;
     
     ofFbo f;
-    ofxAutoReloadedShader gaussian;
     bool nonMaxAndContinuity;
     
 };

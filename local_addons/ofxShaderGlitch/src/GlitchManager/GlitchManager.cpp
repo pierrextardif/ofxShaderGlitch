@@ -17,6 +17,7 @@ void GlitchManager::setup(){
     cells.shader = &shader;
     
     gui.add(cells.cellGroup);
+    gui.add(feedback.feedbackGUI);
     
     
     resImg = ofVec2f(ofGetWidth(), ofGetHeight());
@@ -24,9 +25,11 @@ void GlitchManager::setup(){
     // edge detection : gaussian
     f.allocate(resImg.x, resImg.y);
     gaussian.load("../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian");
-    
     //edge detection non maximum / continuity
     nonMaxAndContinuity = false;
+    
+    // feedback
+    feedback.init(resImg);
 
 }
 
@@ -44,7 +47,7 @@ void GlitchManager::initGui(){
     gui.add(props.set("testGradSize", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0,0,0,0), ofVec4f(1,1,1,1)));
     gui.add(alphaGradiant.set("alphaGradiant", 0.8, 0, 1));
     gui.add(gradiantColor.set("gradiantColor", ofColor(200, 255, 0)));
-    gui.add(continuousMosh.set("continuous Mosh", false));
+    gui.add(continuous.set("continuous", false));
     
     gui.add(typeTiling);
 }
@@ -64,7 +67,7 @@ void GlitchManager::end(){
     gaussian.end();
     f.end();
     
-    
+    feedback.begin();
     shader.begin();
     shader.setUniform2f("u_resImg", resImg);
     shader.setUniform1i("u_tilingType", type);
@@ -74,13 +77,15 @@ void GlitchManager::end(){
     shader.setUniform2f("u_gradFinish", props->z, props->w);
     shader.setUniform1f("u_alphaGradiant", alphaGradiant);
     shader.setUniform4f("u_gradiantColor", gradiantColor->r / 255., gradiantColor->g  / 255., gradiantColor->b  / 255., gradiantColor->a / 255.);
-    shader.setUniform1f("u_continuousMosh", (continuousMosh == true) ? 1.:0.);
+    shader.setUniform1f("u_continuousMosh", (continuous == true) ? 1.:0.);
     shader.setUniform1f("u_maxContinuity", (nonMaxAndContinuity == true) ? 1.:0.);
     shader.setUniform1f("u_time", ofGetElapsedTimef());
     cells.addUniforms();
     
     f.draw(0,0);
     shader.end();
+    feedback.end(resImg);
+    
 }
 
 //--------------------------------------------------------------

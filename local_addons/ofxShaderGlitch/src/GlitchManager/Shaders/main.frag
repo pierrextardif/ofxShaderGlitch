@@ -21,7 +21,7 @@ uniform float               u_continuousMosh;
 uniform vec4                u_BackGrndColor;
 uniform vec4                u_gradiantColor;
 
-uniform float u_maxContinuity;
+uniform float               u_maxContinuity;
 
 #pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
 // Effects
@@ -53,6 +53,17 @@ vec2 lateralSlider(vec2 uv){
 
 // ================
 
+
+// ================
+
+float getLuminance(vec3 rgb){
+    return 0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b;
+}
+
+// ================
+
+
+
 int convertAngleToDirection(float theta){
     
     int offset = -1;
@@ -68,9 +79,11 @@ int convertAngleToDirection(float theta){
     return offset;
 }
 
-
-float getStrength(sampler2DRect tex, vec2 uv){
+vec3 edgeTracking(sampler2DRect tex, vec2 uv){
     
+    float col = 0.;
+    vec2 thetaOffsetDir = vec2(0.);
+    float theta = -1;
     float strength = 0.;
     if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
         
@@ -84,97 +97,55 @@ float getStrength(sampler2DRect tex, vec2 uv){
             }
         }
         
-        strength = pow(colX * colX + colY * colY, (.5 * abs(sin(PI_2))));
-    }
-    return strength;
-}
-
-vec2 getAngle(sampler2DRect tex, vec2 uv){
-    
-    vec2 theta = vec2(0.);
-    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
-        
-        int i,j;
-        float colX = 0.;
-        float colY = 0.;
-        for(i = -1; i <=1; i++){
-            for(j = -1; j <=1; j++){
-                colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
-                colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
-            }
-        }
-        
-        theta = convertAngle(atan(colY / colX));
+        strength = pow(colX * colX + colY * colY, (.5));
+        thetaOffsetDir = convertAngle(atan(colY / colX));
+        theta = convertAngleToDirection(atan(colY / colX));
     }
     
-    return theta;
-}
-
-vec2 getSA(sampler2DRect tex, vec2 uv){
-    vec2 strengthTheta = vec2(0.);
-    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
-       
-       int i,j;
-       float colX = 0.;
-       float colY = 0.;
-       for(i = -1; i <=1; i++){
-           for(j = -1; j <=1; j++){
-               colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
-               colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
-           }
-       }
-       
-        strengthTheta.x = pow(colX * colX + colY * colY, (.5 * abs(sin(PI_2))));
-        strengthTheta.y = convertAngleToDirection(atan(colY / colX) );
-        
+    col = strength;
+    if(strength >= highThreshold)col = 1.0;
+    if(strength < lowThreshold){
+        col = 0.;
     }
     
-    return strengthTheta;
-}
+//    if((strength >= lowThreshold && strength < highThreshold)  ){
+//        bool isNeighBoorStrong = false;
 //
-
-// ================
-
-float getLuminance(vec3 rgb){
-    return 0.2126*rgb.r + 0.7152*rgb.g + 0.0722*rgb.b;
-}
-
-// ================
-
-
-vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, float threshold, bool vertical){
-    
+//        float neighboorStrength = 0.;
+//        int k = -1;
+//        for(k = -1; k <=1; k += 2){
+//            vec2 uvNeighboor = uv + thetaOffsetDir * k;
+//
+//            int i,j;
+//            float colX = 0.;
+//            float colY = 0.;
+//            for(i = -1; i <=1; i++){
+//                for(j = -1; j <=1; j++){
+//                    colX += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gx[i+1][j+1]);
+//                    colY += GREYTex(tex, uvNeighboor + vec2(i,j)) * (Gy[i+1][j+1]);
+//                }
+//            }
+//
+//            neighboorStrength = pow(colX * colX + colY * colY, .5);
+//            if(neighboorStrength > highThreshold)isNeighBoorStrong=true;
+//
+//        }
+//        if( (isNeighBoorStrong || col == 1.) && neighboorStrength < strength ){
+//
+////            if( isNeighBoorStrong || (col == 1. && neighboorStrength < strength) ){
+//            col = 1.0;
+//        }else{
+//            col = 0.;
+//        }
+//    }
     vec3 cols = vec3(0.);
     
-    float coord = originalCoords.y;
-    if(!vertical)coord = originalCoords.x;
+    if(theta == 0)cols = vec3(1., 0., 0.);
+    if(theta == 1)cols = vec3(0., 1., 0.);
+    if(theta == 2)cols = vec3(0., 0., 1.);
+    if(theta == 2)cols = vec3(0., 1., 1.);
     
-    int k;
-    int amnt = 0;
-    for(k = 2; k <= 2 + amnt; k += 1){
-        float index = k * 6.;
-        float speedInterval = floor(coord * index + amnt);
-        float dir = Hash21(vec2(speedInterval));
-        if(dir > .5)speedInterval = - dir * 3.;
-        if(dir < .5)speedInterval = dir * 3.;
-        float interval = floor(coord * index + speed * speedInterval  );
-        
-        
-        float offset = Hash21(vec2(interval));
-        float sineRun = Hash21(vec2(offset * uv.y));
-        if(!vertical)sineRun = Hash21(vec2(offset * uv.x));
-        
-        if(offset < threshold)
-        {
-            
-            if(vertical)uv.x += (offset + sineRun * .005 * sin(uv.y * .1)) * u_resImg.x;
-            if(!vertical)uv.y += (offset + sineRun * .005 * sin(uv.x * .1)) * u_resImg.x;
-        }
-    }
-    
-//    uv.x = mod(uv.x, u_resImg.x);
-    
-    return texture2DRect(tex, uv);
+    return col * cols;
 }
 // ================
 void main( void )
@@ -183,7 +154,7 @@ void main( void )
     vec2 uv_Norm = vec2(gl_TexCoord[0].st / u_resImg);
     
     vec2 uv = lateralSlider(uv_Norm);
-    vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
+//    vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
 //    colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);
     
     
@@ -212,9 +183,8 @@ void main( void )
 
     // ===========================
     //edges
-//    float edge = edgeDetection( u_tex_unit0, gl_TexCoord[0].st, (u_maxContinuity == 1.0)?true:false);
-//    vec2 edge = processEdge( u_tex_unit0, gl_TexCoord[0].st);
-    
+    float edge = edgeDetection( u_tex_unit0, gl_TexCoord[0].st, (u_maxContinuity == 1.0)?true:false);
+    vec3 edgeColor = edgeTracking( u_tex_unit0, gl_TexCoord[0].st);
     
     // ===========================
     
@@ -222,7 +192,7 @@ void main( void )
     if(prop > 0.0f){
         
         // ==== lateral shift ==== //
-        colors = lateralShift(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, u_time * 2., .5 + .1 * sin(u_time), (u_continuousMosh == 1.)?true:false);
+//        colors = lateralShift(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, u_time * u_speedLinesColumns.y, .5 + .1 * sin(u_time), (u_continuousMosh == 1.)?true:false);
 
         
         // ==== lateral shift ==== //
@@ -255,6 +225,6 @@ void main( void )
         
     }
     
-    gl_FragColor = colors;
+    gl_FragColor = vec4(edgeColor, 1.0);
 }
 

@@ -1,14 +1,5 @@
 
 // ==== Canny Edge ==== //
-#define PI      3.14159265358979323
-#define PI_2    1.57079632679
-#define PI_4    0.78539816339
-#define PI_8    0.39269908169
-
-
-#define PI_7_8  2.7488936
-#define PI_3_8  1.178097
-#define PI_5_8  1.9634954
 
 float highThreshold = .35;
 float lowThreshold = .1;

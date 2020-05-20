@@ -114,3 +114,42 @@ vec3 stripes(float coord, float speed, float threshold, bool flicker){
 }
 
 // ==== stripes ==== //
+
+// ==== lateral shift ==== //
+
+vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, float threshold, bool vertical){
+    
+    vec3 cols = vec3(0.);
+    
+    float coord = originalCoords.y;
+    if(!vertical)coord = originalCoords.x;
+    
+    int k;
+    int amnt = 0;
+    for(k = 2; k <= 2 + amnt; k += 1){
+        float index = k * 6.;
+        float speedInterval = floor(coord * index + amnt);
+        float dir = Hash21(vec2(speedInterval));
+        if(dir > .5)speedInterval = - dir * 3.;
+        if(dir < .5)speedInterval = dir * 3.;
+        float interval = floor(coord * index + speed * speedInterval  );
+        
+        
+        float offset = Hash21(vec2(interval));
+        float sineRun = Hash21(vec2(offset * uv.y));
+        if(!vertical)sineRun = Hash21(vec2(offset * uv.x));
+        
+        if(offset < threshold)
+        {
+            
+            if(vertical)uv.x += (offset + sineRun * .005 * sin(uv.y * .1 + 2. * speed)) * u_resImg.x;
+            if(!vertical)uv.y += (offset + sineRun * .005 * sin(uv.x * .1 + speed)) * u_resImg.y;
+        }
+    }
+    
+//    uv.x = mod(uv.x, u_resImg.x);
+    
+    return texture2DRect(tex, uv);
+}
+
+// ==== lateral shift ==== //
