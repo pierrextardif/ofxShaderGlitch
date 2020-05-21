@@ -11,6 +11,7 @@ void CellManager::setup(){
     initGui();
 }
 
+//--------------------------------------------------------------
 void CellManager::initGui(){
     
     float offsetValue = 1.0;
@@ -19,12 +20,12 @@ void CellManager::initGui(){
     cellGroup.add(offset.set("offset", {offsetValue,offsetValue}, {-offsetValue,-offsetValue}, {offsetValue, offsetValue}));
     cellGroup.add(layers.set("Mask Layers ", 1, 0, 10));
     cellGroup.add(backgroundColor.set("bckGrnd Color ", ofColor::black));
-    cellGroup.add(thresholdNoise.set("thresholdNoise", .7, 0., 1.0));
 }
+
+//--------------------------------------------------------------
 void CellManager::addUniforms(){
     shader->setUniform2f("u_AmntCells", amountOfCells->x, amountOfCells->y);
     shader->setUniform2f("u_OffsetCells", offset->x, offset->y);
     shader->setUniform1f("u_MaskLayers", layers);
     shader->setUniform4f("u_BackGrndColor", backgroundColor->r / 255., backgroundColor->g / 255., backgroundColor->b / 255., backgroundColor->a / 255.);
-    shader->setUniform1f("u_thresholdNoise", thresholdNoise);
 }

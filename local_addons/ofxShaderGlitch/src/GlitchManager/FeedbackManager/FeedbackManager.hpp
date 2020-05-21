@@ -39,7 +39,6 @@ class FeedbackManager{
     ofxAutoReloadedShader fShader;
     ofFbo fbo1, fbo2;
         
-    int indexFbo;
     void begin();
     void end(glm::vec2 resImg);
     

@@ -1,10 +1,8 @@
 // uniforms
 
 
-uniform vec2             u_AmntCells;
 uniform vec2             u_OffsetCells;
 
-uniform float           u_MaskLayers;
 
 #define M_PI 3.1415926535897932
 
@@ -93,10 +91,10 @@ float hexagonalCell(vec2 cellXY, vec2 valSlopes, vec2 offset){
 
 float CellsCheck(vec2 uv_Norm){
     
-    float cellXSize = fract( u_AmntCells.x * uv_Norm.x);
-    float cellYSize = fract( u_AmntCells.y * uv_Norm.y);
+    float cellXSize = fract( u_amntLinesColumns.x * uv_Norm.x);
+    float cellYSize = fract( u_amntLinesColumns.y * uv_Norm.y);
     
-    vec2 id = vec2(floor(u_AmntCells.x * uv_Norm.x), floor(u_AmntCells.y * uv_Norm.y));
+    vec2 id = vec2(floor(u_amntLinesColumns.x * uv_Norm.x), floor(u_amntLinesColumns.y * uv_Norm.y));
     
     return hexagonalCell(vec2(cellXSize, cellYSize), vec2(0.1, 0.5), u_OffsetCells);
 }

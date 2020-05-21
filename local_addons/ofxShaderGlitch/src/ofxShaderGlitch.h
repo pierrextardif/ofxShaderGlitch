@@ -33,7 +33,6 @@ class ofxShaderGlitch{
     GlitchManager glitch;
     void begin();
     void end();
-    void addUniforms();
     void drawGUI();
 
 };

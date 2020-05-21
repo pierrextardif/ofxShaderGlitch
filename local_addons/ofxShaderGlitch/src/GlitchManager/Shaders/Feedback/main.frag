@@ -140,14 +140,6 @@ vec2 getSA(sampler2DRect tex, vec2 uv){
     return strengthTheta;
 }
 
-/*
-
- if(theta == 0)cols = vec3(1., 0., 0.);
- if(theta == 1)cols = vec3(0., 1., 0.);
- if(theta == 2)cols = vec3(0., 0., 1.);
- if(theta == 2)cols = vec3(0., 1., 1.);
- */
-
 bool dirRed(vec2 uvDir){
     bool hDir = false;
     // direction is vertical so we take the horizontal direction to get a ray
@@ -166,14 +158,14 @@ bool dirGreen(vec2 uvDir){
 bool dirBlue(vec2 uvDir){
     bool fDiagDir = false;
     // direction is first diag so we take the second diag to get a ray
-    if(uvDir.x == -1. && uvDir.y == 1.)fDiagDir = true;
+    if( (uvDir.x == -1. && uvDir.y == 1. ) || (uvDir.x == 1. && uvDir.y == -1. ) )fDiagDir = true;
     return fDiagDir;
 }
 
-bool dirPink(vec2 uvDir){
+bool dirTurquoise(vec2 uvDir){
     bool sDiagDir = false;
     // direction is first diag so we take the second diag to get a ray
-    if(uvDir.x == -1. && uvDir.y == -1.)sDiagDir = true;
+    if( (uvDir.x == -1. && uvDir.y == -1.) || (uvDir.x == 1. && uvDir.y == 1.) )sDiagDir = true;
     return sDiagDir;
 }
 
@@ -182,17 +174,30 @@ vec3 edgeFeedback(sampler2DRect tex, vec2 uv){
     vec3 col = vec3(0.);
     int i,j;
     
-    float decreaseRatio = .97;
+    vec4 decreaseRatio = vec4(.96, .94, .98, .94);
     
-    for(i = -1; i <=1; i++){
-        for(j = -1; j <=1; j++){
+    
+    for(i = -1; i <= 1; i += 1){
+        for(j = -1; j <= 1; j += 1){
+
             vec2 newUVs = uv + vec2(i,j);
-            vec3 c = texture2DRect(tex, newUVs).rgb;
-            if(c.r > 0. && dirRed(vec2(i,j)))col.r  = c.r * decreaseRatio;
-            if(c.g > 0. && dirGreen(vec2(i,j)))col.g = c.g * decreaseRatio;
-            if(c.b > 0. && dirBlue(vec2(i,j)))col.b = c.b * decreaseRatio;
-            if(c.b > 0. && c.g == c.b && dirPink(vec2(i,j)))col.g = col.b = c.g * decreaseRatio;
-//            if(c.b > 0.)col.b = c.b * decreaseRatio;
+            vec4 c = texture2DRect(tex, newUVs);
+
+            if(c.b > 0. && c.g == c.b && dirTurquoise(vec2(i,j))){
+                col.g = col.b = c.g * decreaseRatio.w;
+            }
+            
+            
+            if(c.r > 0. && dirRed(vec2(i,j)) ){
+                col.r = c.r * decreaseRatio.x;
+            }
+            if(c.g > 0. && dirGreen(vec2(i,j)) ){
+                col.g = c.g * decreaseRatio.y;
+            }
+            if(c.b > 0. && dirBlue(vec2(i,j)) ){
+                col.b = c.b * decreaseRatio.z;
+            }
+            
         }
     }
     
@@ -203,8 +208,6 @@ vec3 edgeFeedback(sampler2DRect tex, vec2 uv){
 // ================
 void main( void )
 {
-    
-    vec2 uv_Norm = vec2(gl_TexCoord[0].st / u_resImg);
     vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
     colors.rgb += edgeFeedback(u_texFeedback, gl_TexCoord[0].st);
     

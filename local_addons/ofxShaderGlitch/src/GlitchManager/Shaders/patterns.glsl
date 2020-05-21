@@ -7,7 +7,7 @@ float area(vec2 uv, float amnt, float u_time, float threshold){
     
     
     float speed = u_time * 0.05;
-    if(u_continuousMosh != 1.)speed = floor(u_time);
+    if(u_continuous != 1.)speed = floor(u_time);
     
     for(k=1.; k <= amnt + 1.; k += .5){
         float levelZoom = k + amnt * sin(floor(k* 12.22));
@@ -34,7 +34,7 @@ vec3 areaDegrade(vec2 uv, float amnt, float u_time, float threshold){
     
     float speed = u_time * 0.05;
     
-    if(u_continuousMosh != 1.)speed = floor(u_time);
+    if(u_continuous != 1.)speed = floor(u_time);
     float passes = 0.;
     
     for(k=1.; k <= amnt + 1.; k += .5){

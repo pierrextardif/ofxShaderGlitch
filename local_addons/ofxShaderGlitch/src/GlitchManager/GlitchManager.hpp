@@ -33,26 +33,26 @@ class GlitchManager{
     void end();
     
     bool guiON;
-    ofParameterGroup typeTiling;
-    ofParameter < int > type;
+    ofParameterGroup typeTiling, typeEffect;
+    ofParameter < int > typeT, typeE;
     ofParameter < ofVec2f > amntLinesColumns;
     ofParameter < ofVec2f > speedMoves;
     ofParameter < ofVec4f > props;
     ofParameter < float > alphaGradiant;
     ofParameter < ofColor > gradiantColor;
     ofParameter < bool > continuous;
+    ofParameter < float > thresholdNoise;
     
     void initGui();
     void drawGUI(){if(guiON)gui.draw();}
     
-    void setUniform1f(string name, float floatName);
     
     ofxPanel gui;
     
     ofVec2f resImg;
     ofxAutoReloadedShader shader, gaussian;
     CellManager cells;
-    FeedbackManager feedback;
+    FeedbackManager feedbackEdge;
     
     ofFbo f;
     bool nonMaxAndContinuity;

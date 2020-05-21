@@ -16,20 +16,12 @@ void ofxShaderGlitch::setup(){
 //--------------------------------------------------------------
 void ofxShaderGlitch::begin(){
     glitch.begin();
-    addUniforms();
 }
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::end(){
     glitch.end();
     drawGUI();
-}
-
-//--------------------------------------------------------------
-void ofxShaderGlitch::addUniforms(){
- 
-//    glitch.setUniform1f("u_time", sin(ofGetElapsedTimef()) );
-
 }
 
 //--------------------------------------------------------------

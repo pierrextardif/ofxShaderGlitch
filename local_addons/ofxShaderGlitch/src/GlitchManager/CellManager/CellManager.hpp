@@ -27,7 +27,6 @@ class CellManager{
     ofParameter< ofVec2f > amountOfCells;
     ofParameter< ofVec2f > offset;
     ofParameter< int > layers;
-    ofParameter < float > thresholdNoise;
     
     void addUniforms();
     ofxAutoReloadedShader* shader;
