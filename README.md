@@ -22,6 +22,12 @@ Get the latest OpenFrameworks version from [here](https://openframeworks.cc/down
 
 Add this repository to your addons folder, or to the local_addons folder.
 </br>
+If using the local_addons folder, make sure the pre processing `#define LOCALADDON`  is **present** in the `constants.h` and in `main.frag`.
+</br>
+If using the addons folder, make sure the pre processing `#define LOCALADDON`  is **commented** in the `constants.h` and in `main.frag`.
+
+
+</br>
 The only dependecy is [ofxAutoReloadedShader](https://github.com/andreasmuller/ofxAutoReloadedShader) from [Andreas Muller](https://github.com/andreasmuller), used to reload shader on the fly to help compiling only shaders.
 </br>
 </br>
@@ -31,6 +37,13 @@ The only dependecy is [ofxAutoReloadedShader](https://github.com/andreasmuller/o
 ## Example
 
 Just try running [the example](./example).
+
+
+## Effects
+The glitches are created with 2 sections : tiling and effects.
+The tiling create patterns on which to apply the effects.
+
+There is 10 tiles and 10 effects.
 
 ## Author
 

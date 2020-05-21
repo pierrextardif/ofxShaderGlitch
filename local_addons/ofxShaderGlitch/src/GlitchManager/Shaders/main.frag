@@ -1,5 +1,6 @@
 #version 120
 #extension GL_ARB_texture_rectangle : enable
+#define LOCALADDON
 
 #define M_PI 3.1415926535897932
 
@@ -36,8 +37,6 @@ vec4 getTexel(sampler2DRect tex, vec2 uv){
 }
 
 // ===== import elements ==== //
-
-#define LOCALADDON
 
 #ifdef LOCALADDON
 #   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
