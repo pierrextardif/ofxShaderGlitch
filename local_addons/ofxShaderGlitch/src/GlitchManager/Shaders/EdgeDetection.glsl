@@ -123,3 +123,53 @@ float edgeDetection(sampler2DRect tex, vec2 uv, bool NonMaxAndContinuity){
 }
 
 // ==== Canny Edge ==== //
+
+// ==== edge Color ==== //
+vec3 convertAngleToColor(float theta){
+    
+    vec3 offset = vec3(0.);
+    // direction vertical neighboor
+    if( ( theta >= PI_3_8 && theta < PI_5_8 ) || (theta >= -PI_5_8 && theta < - PI_3_8) )offset.r = mod(theta / PI + 2., 2.);
+//    // direction horizontal neighboor
+    if( ( theta >= -PI_8 && theta < PI_8 )  || (theta >= PI_7_8 && theta < PI_7_8 + PI_4) )offset.g =  mod(theta / PI + 2., 2.);
+    //first diagonal //
+    if( (theta >= PI_8 && theta < PI_3_8 )  || (theta >= -PI_7_8 && theta < -PI_5_8) )offset.b = mod(theta / PI + 2., 2.);
+    //second diagonal \\
+    if( ( theta >= -PI_3_8 && theta < -PI_8 ) || ( theta >= PI_3_8 && theta < PI_7_8) )offset.gb =  vec2(mod( theta / PI + 2., 2.));
+    
+    return offset;
+}
+
+vec3 edgeTracking(sampler2DRect tex, vec2 uv){
+    
+    float intensityCol = 0.;
+    vec3 cols = vec3(0.);
+    vec2 thetaOffsetDir = vec2(0.);
+    float theta = -1;
+    float strength = 0.;
+    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
+        
+        int i,j;
+        float colX = 0.;
+        float colY = 0.;
+        for(i = -1; i <=1; i++){
+            for(j = -1; j <=1; j++){
+                colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
+                colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
+            }
+        }
+        
+        strength = pow(colX * colX + colY * colY, (.5));
+        cols = convertAngleToColor(atan(colY / colX));
+    }
+    
+    intensityCol = strength;
+    if(strength >= highThreshold)intensityCol = 1.0;
+    if(strength < lowThreshold){
+        intensityCol = 0.;
+    }
+
+    return vec3(cols * intensityCol);
+}
+
+// ==== edge Color ==== //

@@ -336,4 +336,3 @@ float addWavesDots(vec2 uv, int amnt, float mainSpeed, vec2 precisionGrid){
     return pos;
     
 }
-

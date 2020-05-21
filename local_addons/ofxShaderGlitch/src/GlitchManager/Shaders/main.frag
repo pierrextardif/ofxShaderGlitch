@@ -30,6 +30,8 @@ uniform vec4                u_gradiantColor;
 uniform float               u_maxContinuity;
 
 
+
+
 // ===== import elements ==== //
 #pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
 // Effects
@@ -44,68 +46,6 @@ uniform float               u_maxContinuity;
 vec4 invertGradColor = vec4(1.0 - u_gradiantColor.rgb, u_gradiantColor.a);
 vec4 invertBackground = vec4(1.0 - u_BackGrndColor.rgb, u_BackGrndColor.a);
 
-vec2 lateralSlider(vec2 uv){
-    
-    float verticalID = floor(u_amntLinesColumns.y * uv.y);
-    
-    float pseudoNoise = fract(sin(verticalID + u_time / 100.0)*40.0) * 0.04;
-    
-    
-        
-    return vec2(mod(uv.x + pseudoNoise, 1.0), uv.y);
-}
-
-
-// ================
-
-vec3 convertAngleToColor(float theta){
-    
-    vec3 offset = vec3(0.);
-    // direction vertical neighboor
-    if( ( theta >= PI_3_8 && theta < PI_5_8 ) || (theta >= -PI_5_8 && theta < - PI_3_8) )offset.r = mod(theta / PI + 2., 2.);
-//    // direction horizontal neighboor
-    if( ( theta >= -PI_8 && theta < PI_8 )  || (theta >= PI_7_8 && theta < PI_7_8 + PI_4) )offset.g =  mod(theta / PI + 2., 2.);
-    //first diagonal //
-    if( (theta >= PI_8 && theta < PI_3_8 )  || (theta >= -PI_7_8 && theta < -PI_5_8) )offset.b = mod(theta / PI + 2., 2.);
-    //second diagonal \\
-    if( ( theta >= -PI_3_8 && theta < -PI_8 ) || ( theta >= PI_3_8 && theta < PI_7_8) )offset.gb =  vec2(mod( theta / PI + 2., 2.));
-    
-    return offset;
-}
-
-vec3 edgeTracking(sampler2DRect tex, vec2 uv){
-    
-    float intensityCol = 0.;
-    vec3 cols = vec3(0.);
-    vec2 thetaOffsetDir = vec2(0.);
-    float theta = -1;
-    float strength = 0.;
-    if(uv.x>0.&&uv.x<u_resImg.x&&uv.y>0.&&uv.y<u_resImg.y){
-        
-        int i,j;
-        float colX = 0.;
-        float colY = 0.;
-        for(i = -1; i <=1; i++){
-            for(j = -1; j <=1; j++){
-                colX += GREYTex(tex, uv + vec2(i,j)) * (Gx[i+1][j+1]);
-                colY += GREYTex(tex, uv + vec2(i,j)) * (Gy[i+1][j+1]);
-            }
-        }
-        
-        strength = pow(colX * colX + colY * colY, (.5));
-        cols = convertAngleToColor(atan(colY / colX));
-    }
-    
-    intensityCol = strength;
-    if(strength >= highThreshold)intensityCol = 1.0;
-    if(strength < lowThreshold){
-        intensityCol = 0.;
-    }
-
-    return vec3(cols * intensityCol);
-}
-
-// ================
 void main( void )
 {
     
@@ -113,11 +53,13 @@ void main( void )
     
     vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
     
-    
+
+    // ==== feedback ====
+    if(u_tilingType == -1)colors.rgb = edgeTracking( u_tex_unit0, gl_TexCoord[0].st);
 
     float prop = 0.;
     vec3 stretch = vec3(0.);
-
+    
 
     if(u_tilingType == 0)prop = LinesCheck(uv_Norm);
     if(u_tilingType == 1)prop = ColumnsCheck(uv_Norm);
@@ -168,17 +110,9 @@ void main( void )
         
         // === texture Flip Inbound ==== //
         
-        
-        
         // ==== stripes ==== //
-        if(u_effectType == 6)colors.rgb = stripes(uv_Norm.x, u_time * 4., .5 + .1 * sin(u_time),  true);
+        if(u_effectType == 6)colors.rgb = stripes((u_continuous == 1.)?uv_Norm.x:uv_Norm.y, u_time * 4., .5 + .1 * sin(u_time),  true);
         // ==== stripes ==== //
-        
-        
-        // ==== stripes ==== //
-        if(u_effectType == 7)colors.rgb = stripes(uv_Norm.x, u_time * 4., .5 + .1 * sin(u_time),  true);
-        // ==== stripes ==== //
-        
         
         if(u_effectType == 7)colors = u_BackGrndColor;
         if(u_effectType == 8 || u_effectType == 9)colors = gradiantColor(uv_Norm, u_gradStart, u_gradFinish, colors, u_gradiantColor);

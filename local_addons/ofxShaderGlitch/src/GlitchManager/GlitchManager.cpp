@@ -11,21 +11,27 @@ void GlitchManager::setup(){
     
     initGui();
     
-    // main shader
-    shader.load("../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/main");
+    // ==== main shader ====
+    string path = PATHTOSHADERS;
+    path.append( "main");
+    
+    shader.load(path);
     shader.setMillisBetweenFileCheck(200);
     
     cells.shader = &shader;
     
     resImg = ofVec2f(ofGetWidth(), ofGetHeight());
     
-    // edge detection : gaussian
+    // ==== edge detection : gaussian ====
     f.allocate(resImg.x, resImg.y);
-    gaussian.load("../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gaussian/gaussian");
+    
+    path = PATHTOSHADERS;
+    path.append( "Gaussian/gaussian");
+    gaussian.load(path);
     //edge detection non maximum / continuity
     nonMaxAndContinuity = false;
     
-    // feedback
+    // ==== feedback ====
     feedbackEdge.init(resImg);
 
 }
@@ -48,6 +54,7 @@ void GlitchManager::initGui(){
     typeEffect.add(props.set("rectangle Size", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0,0,0,0), ofVec4f(1,1,1,1)));
     typeEffect.add(alphaGradiant.set("alphaGradiant", 0.8, 0, 1));
     typeEffect.add(gradiantColor.set("gradiantColor", ofColor(200, 255, 0)));
+    typeEffect.add(backgroundColor.set("backgroundColor", ofColor::turquoise));
     typeEffect.add(continuous.set("continuous", false));
     typeEffect.add(thresholdNoise.set("thresholdNoise", .7, 0., 1.0));
     
@@ -75,6 +82,10 @@ void GlitchManager::end(){
     gaussian.end();
     f.end();
     
+    
+    // feedback
+    if(feedbackEdge.activateFeedback)typeT = typeE = -1;
+    
     feedbackEdge.begin();
     shader.begin();
     shader.setUniform2f("u_resImg", resImg);
@@ -88,6 +99,7 @@ void GlitchManager::end(){
     shader.setUniform2f("u_gradFinish", props->z, props->w);
     shader.setUniform1f("u_alphaGradiant", alphaGradiant);
     shader.setUniform4f("u_gradiantColor", gradiantColor->r / 255., gradiantColor->g  / 255., gradiantColor->b  / 255., gradiantColor->a / 255.);
+    shader.setUniform4f("u_backgroundColor", backgroundColor->r / 255., backgroundColor->g  / 255., backgroundColor->b  / 255., backgroundColor->a / 255.);
     shader.setUniform1f("u_continuous", (continuous == true) ? 1.:0.);
     shader.setUniform1f("u_maxContinuity", (nonMaxAndContinuity == true) ? 1.:0.);
     shader.setUniform1f("u_thresholdNoise", thresholdNoise);

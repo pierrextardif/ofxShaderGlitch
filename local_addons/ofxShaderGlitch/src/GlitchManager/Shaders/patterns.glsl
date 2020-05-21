@@ -115,7 +115,7 @@ vec3 stripes(float coord, float speed, float threshold, bool flicker){
 
 // ==== stripes ==== //
 
-// ==== lateral shift ==== //
+// ==== lateral shift 1 ==== //
 
 vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, float threshold, bool vertical){
     
@@ -152,4 +152,19 @@ vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, 
     return texture2DRect(tex, uv);
 }
 
-// ==== lateral shift ==== //
+// ==== lateral shift 1 ==== //
+
+
+// ==== lateral shift 2 ==== //
+vec2 lateralSlider(vec2 uv){
+    
+    float verticalID = floor(u_amntLinesColumns.y * uv.y);
+    
+    float pseudoNoise = fract(sin(verticalID + u_time / 100.0)*40.0) * 0.04;
+    
+    
+        
+    return vec2(mod(uv.x + pseudoNoise, 1.0), uv.y);
+}
+// ==== lateral shift 2 ==== //
+

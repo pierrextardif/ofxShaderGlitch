@@ -40,6 +40,7 @@ class GlitchManager{
     ofParameter < ofVec4f > props;
     ofParameter < float > alphaGradiant;
     ofParameter < ofColor > gradiantColor;
+    ofParameter < ofColor > backgroundColor;
     ofParameter < bool > continuous;
     ofParameter < float > thresholdNoise;
     
