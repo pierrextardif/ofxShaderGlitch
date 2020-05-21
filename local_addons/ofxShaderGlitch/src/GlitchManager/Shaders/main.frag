@@ -31,17 +31,33 @@ uniform float               u_maxContinuity;
 
 
 
+vec4 getTexel(sampler2DRect tex, vec2 uv){
+    return texture2DRect(tex, uv);
+}
 
 // ===== import elements ==== //
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
-// Effects
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/glitch.glsl"
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/EdgeDetection.glsl"
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gradient.glsl"
-// Masks
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/cells.glsl"
-#pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/patterns.glsl"
 
+#define LOCALADDON
+
+#ifdef LOCALADDON
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
+    // Effects
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/glitch.glsl"
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/EdgeDetection.glsl"
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gradient.glsl"
+    // Masks
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/cells.glsl"
+#   pragma include "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/patterns.glsl"
+#else
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/utils.glsl"
+    // Effects
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/glitch.glsl"
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/EdgeDetection.glsl"
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/Gradient.glsl"
+    // Masks
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/cells.glsl"
+#   pragma include "../../../../../addons/ofxShaderGlitch/src/GlitchManager/Shaders/patterns.glsl"
+#endif
 
 vec4 invertGradColor = vec4(1.0 - u_gradiantColor.rgb, u_gradiantColor.a);
 vec4 invertBackground = vec4(1.0 - u_BackGrndColor.rgb, u_BackGrndColor.a);
@@ -51,7 +67,7 @@ void main( void )
     
     vec2 uv_Norm = vec2(gl_TexCoord[0].st / u_resImg);
     
-    vec4 colors = texture2DRect(u_tex_unit0, gl_TexCoord[0].st);
+    vec4 colors = getTexel(u_tex_unit0, gl_TexCoord[0].st);
     
 
     // ==== feedback ====
@@ -106,7 +122,7 @@ void main( void )
         
         if(u_effectType == 3)colors = texFlipV(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, true, true);
         if(u_effectType == 4)colors = texFlipH(u_tex_unit0, gl_TexCoord[0].st, uv_Norm, true, true);
-        if(u_effectType == 5)colors = texture2DRect(u_tex_unit0, lateralSlider(uv_Norm) * u_resImg);
+        if(u_effectType == 5)colors = getTexel(u_tex_unit0, lateralSlider(uv_Norm) * u_resImg);
         
         // === texture Flip Inbound ==== //
         

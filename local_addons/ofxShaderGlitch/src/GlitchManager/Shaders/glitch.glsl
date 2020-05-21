@@ -17,10 +17,10 @@ float distortion_y = 1.0;
 
 vec4 glitchColors(sampler2DRect tex, vec2 vUv, float indexSeed, float prop){
     
-    vec4 originalCol = texture2DRect(tex, vUv);
+    vec4 originalCol = getTexel(tex, vUv);
     
     vec2 uvForNorm = vec2(vUv.x*(1. + seed.x), vUv.y*(1. + seed.y));
-    vec4 normal = texture2DRect(tex, uvForNorm);
+    vec4 normal = getTexel(tex, uvForNorm);
   
 //
     if(vUv.y>distortion_x && vUv.y<distortion_x*(1. + seed.x)) {
@@ -46,9 +46,9 @@ vec4 glitchColors(sampler2DRect tex, vec2 vUv, float indexSeed, float prop){
     
     
     vec2 offset =  amount * vec2( cos(angle * M_PI), sin(angle * M_PI));
-    vec4 cr = texture2DRect(tex, vUv + offset);
-    vec4 cga = texture2DRect(tex, vUv);
-    vec4 cb = texture2DRect(tex, vUv - offset);
+    vec4 cr = getTexel(tex, vUv + offset);
+    vec4 cga = getTexel(tex, vUv);
+    vec4 cb = getTexel(tex, vUv - offset);
 
     return vec4(cr.r, cga.g, cb.b, cga.a);
 }
@@ -57,7 +57,7 @@ vec4 glitchColors(sampler2DRect tex, vec2 vUv, float indexSeed, float prop){
 vec4 colorSampleShift(sampler2DRect tex, vec2 uv, vec2 imgSize, float intensityShift, vec4 originalColor){
     
     uv = mod(uv + intensityShift * imgSize, imgSize);
-    return mix(texture2DRect(tex, uv), originalColor, 1. - intensityShift * .7);
+    return mix(getTexel(tex, uv), originalColor, 1. - intensityShift * .7);
 }
 
 
@@ -66,6 +66,6 @@ vec4 colorStretch(sampler2DRect tex, vec2 uv, vec2 imgSize, float prop, vec2 int
 //    uv.y = uv.y * 3.2 * intensityShift;
     uv = mod(uv + prop * imgSize, imgSize);
     
-    vec4 red = texture2DRect(tex, uv);
+    vec4 red = getTexel(tex, uv);
     return mix(red, originalColor, 1. - intensityShift.y * intensityShift.x);
 }

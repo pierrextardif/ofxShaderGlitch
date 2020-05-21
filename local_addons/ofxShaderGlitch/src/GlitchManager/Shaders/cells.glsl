@@ -118,7 +118,7 @@ vec4 texFlipV(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool horizontal, bool ad
             }
         }
         
-        colors = texture2DRect(tex, newUVs);
+        colors = getTexel(tex, newUVs);
         if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
     }
     
@@ -143,7 +143,7 @@ vec4 texFlipH(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool vertical, bool addG
             }
         }
         
-        colors = texture2DRect(tex, newUVs);
+        colors = getTexel(tex, newUVs);
         if(addGradiant)colors = gradiantColor(uvNorms, u_gradStart, u_gradFinish, colors, u_gradiantColor);
     }
     

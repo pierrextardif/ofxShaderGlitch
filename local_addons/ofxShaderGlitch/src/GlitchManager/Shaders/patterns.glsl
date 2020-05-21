@@ -149,7 +149,7 @@ vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, 
     
 //    uv.x = mod(uv.x, u_resImg.x);
     
-    return texture2DRect(tex, uv);
+    return getTexel(tex, uv);
 }
 
 // ==== lateral shift 1 ==== //
