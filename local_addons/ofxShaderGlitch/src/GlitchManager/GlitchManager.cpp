@@ -8,7 +8,12 @@
 #include "GlitchManager.hpp"
 
 void GlitchManager::setup(){
+    setup(glm::vec2(ofGetWidth(), ofGetHeight()));
+}
+
+void GlitchManager::setup(glm::vec2 imgSize){
     
+    gui.clear();
     initGui();
     
     // ==== main shader ====
@@ -20,7 +25,7 @@ void GlitchManager::setup(){
     
     cells.shader = &shader;
     
-    resImg = ofVec2f(ofGetWidth(), ofGetHeight());
+    resImg = imgSize;
     
     // ==== edge detection : gaussian ====
     f.allocate(resImg.x, resImg.y);

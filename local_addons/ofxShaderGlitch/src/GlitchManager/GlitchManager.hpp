@@ -29,6 +29,7 @@ class GlitchManager{
     }
     
     void setup();
+    void setup(glm::vec2 sizeImg);
     void begin();
     void end();
     
@@ -50,7 +51,7 @@ class GlitchManager{
     
     ofxPanel gui;
     
-    ofVec2f resImg;
+    glm::vec2 resImg;
     ofxAutoReloadedShader shader, gaussian;
     CellManager cells;
     FeedbackManager feedbackEdge;

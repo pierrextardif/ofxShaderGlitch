@@ -88,7 +88,7 @@ vec3 stripes(float coord, float speed, float threshold, bool flicker){
     
     
     int k;
-    int amnt = 2;
+    int amnt = u_MaskLayers;
     for(k = 2; k <= 2 + amnt; k += 1){
         float index = k * 6.;
         float speedInterval = floor(coord * index + amnt);
@@ -154,17 +154,20 @@ vec4 lateralShift(sampler2DRect tex, vec2 uv, vec2 originalCoords, float speed, 
 
 // ==== lateral shift 1 ==== //
 
-
 // ==== lateral shift 2 ==== //
-vec2 lateralSlider(vec2 uv){
+
+vec2 lateralSlider(vec2 uv, bool h){
     
-    float verticalID = floor(u_amntLinesColumns.y * uv.y);
+    float id = floor(u_amntLinesColumns.y * uv.y);
+    if(h)id = floor(u_amntLinesColumns.x * uv.x);
     
-    float pseudoNoise = fract(sin(verticalID + u_time / 100.0)*40.0) * 0.04;
+    float pseudoNoise = fract(sin(id + u_time / 100.0)*40.0) * 0.04;
     
     
         
-    return vec2(mod(uv.x + pseudoNoise, 1.0), uv.y);
+    return (h ? vec2(uv.x, mod(uv.y + pseudoNoise, 1.0)) : vec2(mod(uv.x + pseudoNoise, 1.0), uv.y) );
 }
+
 // ==== lateral shift 2 ==== //
+
 

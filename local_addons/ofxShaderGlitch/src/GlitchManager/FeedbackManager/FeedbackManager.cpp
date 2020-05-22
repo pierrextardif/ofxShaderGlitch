@@ -12,7 +12,7 @@ void FeedbackManager::setup(){
     initialised = false;
     
     feedbackGUI.setName("feedback");
-    feedbackGUI.add(activateFeedback.set("feedback ON /OFF", true));
+    feedbackGUI.add(activateFeedback.set("feedback ON /OFF", false));
     
 }
 

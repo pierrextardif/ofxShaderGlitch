@@ -101,8 +101,8 @@ float CellsCheck(vec2 uv_Norm){
 
 // ==== Cells flip ==== //
 
-vec4 texFlipV(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool horizontal, bool addGradiant){
-    vec4 colors = vec4(0.);
+vec4 texFlipV(sampler2DRect tex, vec2 uv, vec4 originalColors, vec2 uvNorms, bool horizontal, bool addGradiant){
+    vec4 colors = originalColors;
     
     
     vec2 pos = floor(uvNorms * u_amntLinesColumns);
@@ -126,8 +126,8 @@ vec4 texFlipV(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool horizontal, bool ad
     
 }
 
-vec4 texFlipH(sampler2DRect tex, vec2 uv, vec2 uvNorms, bool vertical, bool addGradiant){
-    vec4 colors = vec4(0.);
+vec4 texFlipH(sampler2DRect tex, vec2 uv, vec4 originalColors, vec2 uvNorms, bool vertical, bool addGradiant){
+    vec4 colors = originalColors;
     
     
     vec2 pos = floor(uvNorms * u_amntLinesColumns);

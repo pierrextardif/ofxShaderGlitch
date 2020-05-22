@@ -23,7 +23,6 @@ class CellManager{
     void update();
     
     ofParameterGroup cellGroup;
-    ofParameter< ofVec2f > amountOfCells;
     ofParameter< ofVec2f > offset;
     ofParameter< int > layers;
     
