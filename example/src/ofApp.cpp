@@ -5,10 +5,11 @@
 void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_VERBOSE);
-
-	image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
-//    image.loadImage("Textures/IMG_0824.jpg");
-
+    
+    
+    input = 0;
+    image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
+    
 	font.loadFont(ofToDataPath( "Fonts/DIN.otf"), 8 );
     
     // GlitchShader
@@ -19,6 +20,12 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    if(input == 1){
+        vidGrabber.update();
+        if(vidGrabber.isFrameNew()){
+            t = vidGrabber.getTexture();
+        }
+    }
     
    
 }
@@ -27,9 +34,13 @@ void ofApp::update()
 void ofApp::draw()
 {
     shaderGlitch.begin();
-        image.draw(0,0);
+    
+        if(input == 0)image.draw(0,0);
+        if(input == 1)t.draw(0,0);
+        
     shaderGlitch.end();
-
+    
+    
 	// draw the FPS
 	sprintf(tempStr, "%4.1f", ofGetFrameRate() );
 	ofVec2f pos( ofGetWidth()-30, ofGetHeight()-5 );
@@ -41,4 +52,19 @@ void ofApp::draw()
 }
 
 void ofApp::keyPressed(int key) {
+    if(key == 'i')switchInput();
+}
+
+void ofApp::switchInput(){
+    input += 1;
+    if( input > 1)input = 0;
+    
+    if(input == 1 && !vidGrabber.isInitialized()){
+        vidGrabber.setDeviceID(0);
+        vidGrabber.setDesiredFrameRate(60);
+        vidGrabber.initGrabber(1920, 1080);
+        
+    }
+    
+    
 }

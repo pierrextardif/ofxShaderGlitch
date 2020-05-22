@@ -12,14 +12,20 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
     
-    void keyPressed(int key);
-
+        void keyPressed(int key);
+        
+        
+        void switchInput();
 		ofImage image;
+        ofVideoGrabber vidGrabber;
+        ofTexture t;
 
+        // fps infos
 		ofTrueTypeFont 	font;
-
 		char tempStr[512];
     
+    
+    int input;
     ofxShaderGlitch shaderGlitch;
     
     

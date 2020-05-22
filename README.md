@@ -44,6 +44,7 @@ The addon works by treating the texture the way OF does it : rectangular texture
 Just try running [the example](./example).
 
 Press `g` to show/hidde the gui.
+Press `i` to change the type of input - webcam or image.
 There is 2 main sections in the gui :  `Type of Tyling` and `Type of Effect`.
 
 
@@ -55,12 +56,12 @@ There is 10 tiles and 10 effects.
 
 ### Tiling :
 1 - > 4 : divisions on screen controlled by the ![.](Assets/gui_1.png) .</br>
-4 sections are controlled by the `Cell -> offset x//y ` : ![.](Assets/gui_2.png)</br>
+4 : sections are controlled by the `Cell -> offset x//y ` : ![.](Assets/gui_2.png)</br>
 5 - > 9 : patterns generation  - parameters to control are : `Mask Layers` for tyling 5, `thresholdNoise` for tyling 6, `continuous` for 7->9.</br>
 `Speed.y` is controlling the speed of the effects for tyling 5 -> 9.</br>
 `RectangleSize` controls the gradiant rect boundaries, and gradiantColor controls its color.</br>
 
-Tyling 10 makes the effect apply to the whole screen.
+10 : makes the effect apply to the whole screen.
 </br>
 Tyling is processed in the main.frag by setting up the `prop` variable.
 
@@ -85,8 +86,9 @@ Tyling is processed in the main.frag by setting up the `prop` variable.
 
 ![.](Assets/edgesFeedback.png)
 </br>
-This technic uses the strength and angle from the [Cannny Edge detection](https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123) seperatly implemented [here](https://github.com/pierrextardif/ofxEdgeCannyDetector), and returns an intensity of the edges which is processed in a feedback shader to get a trailing effect.
+This technic uses the strength and angle from the [Cannny Edge detection](https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123) seperatly implemented [here](https://github.com/pierrextardif/ofxEdgeCannyDetector), and returns an intensity of the edges which is processed in a feedback shader to get a trailing effect. works best with the webcam.
 The feedback turns the effects and tilying to -1, as to not interfer with the rest of the shader.
+There is also an Edge detection function (not used) which works with key `c` to control the non Maximum of the edge detection and continuity of the pixels value when in between threshold values by checking the neighboors values, when the `nonMaxAndContinuity` is turned `ON` ( initialised `OFF`).
 
 
 
