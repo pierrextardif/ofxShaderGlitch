@@ -10,6 +10,7 @@ void ofApp::setupPresetsManager()
 
 	//-
 
+	//added presetsManager
 	ofParameterGroup g{ "GLITCH PARAMS" };
 	g.add(shaderGlitch.glitch.typeEffect);
 	g.add(shaderGlitch.glitch.typeTiling);
