@@ -5,33 +5,32 @@
 #include "ofxShaderGlitch.h"
 #include "ofxPresetsManager.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp {
 
-	public:
-		ofxPresetsManager presetsManager;
-		void setupPresetsManager();
+public:
 
-		void setup();
-		void update();
-		void draw();
-    
-        void keyPressed(int key);
-        
-        
-        void switchInput();
-		ofImage image;
-        ofVideoGrabber vidGrabber;
-        ofTexture t;
+	//presetsManager
+	ofxPresetsManager presetsManager;
+	void setupPresetsManager();
 
-        // fps infos
-		ofTrueTypeFont 	font;
-		char tempStr[512];
-    
-    
-    int input;
-    ofxShaderGlitch shaderGlitch;
-    
-    
-    
+	void setup();
+	void update();
+	void draw();
+
+	void keyPressed(int key);
+
+	void switchInput();
+	ofImage image;
+	ofVideoGrabber vidGrabber;
+	ofTexture t;
+
+	// fps infos
+	ofTrueTypeFont 	font;
+	char tempStr[512];
+
+
+	int input;
+	ofxShaderGlitch shaderGlitch;
+
 };
 
