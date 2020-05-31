@@ -16,6 +16,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void exit();
 
 	void keyPressed(int key);
 
@@ -31,6 +32,7 @@ public:
 
 	int input;
 	ofxShaderGlitch shaderGlitch;
+
 
 };
 

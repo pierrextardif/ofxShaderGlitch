@@ -4,13 +4,14 @@
 //--------------------------------------------------------------
 void ofApp::setupPresetsManager()
 {
-	//optional folders. sames as defaults
-	presetsManager.setPath_GlobalFolder("ofxPresetsManager");//main container folder
-	presetsManager.setPath_KitFolder("presets");//from kit/livePanel presets
-	presetsManager.setPath_PresetsFolder("archive");//for browser file presets
+	////optional folders. same as defaults. look on /data folder
+	//presetsManager.setPath_GlobalFolder("ofxPresetsManager");//main container folder
+	//presetsManager.setPath_KitFolder("presets");//from kit/livePanel presets
+	//presetsManager.setPath_PresetsFolder("archive");//for browser file presets
 
 	//-
 
+	//prepare the group and add subgroups that you want presetize:
 	ofParameterGroup g{ "GLITCH PARAMS" };
 	g.add(shaderGlitch.glitch.typeEffect);
 	g.add(shaderGlitch.glitch.typeTiling);
@@ -28,6 +29,11 @@ void ofApp::setupPresetsManager()
 	//final startup refresh
 	presetsManager.refresh();
 
+	//nothing more!
+	//all presets are stored on runtime to xml files.
+	//there's a kind of faster 'memory mode' that stores presets on a vector, and to xml files only on exit. 
+	//update, draw and autosave its handled by the addon. only must call exit method.
+	//api can disable trigger keys, hide/show gui and customize layout...etc
 }
 
 //--------------------------------------------------------------
@@ -45,6 +51,7 @@ void ofApp::setup()
 	// GlitchShader
 	shaderGlitch.setup();
 
+	//presetsManager
 	setupPresetsManager();
 }
 
@@ -57,6 +64,12 @@ void ofApp::update()
 			t = vidGrabber.getTexture();
 		}
 	}
+}
+
+//--------------------------------------------------------------
+void ofApp::exit()
+{
+	presetsManager.exit();//only required to store some gui/class settings.
 }
 
 //--------------------------------------------------------------
