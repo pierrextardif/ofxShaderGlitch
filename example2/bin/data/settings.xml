@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<group>
+	<testGradSize>0.0240354, 0.095464, 0.340362, 0.840362</testGradSize>
+	<alphaGradiant>0.398555</alphaGradiant>
+	<gradiantColor>9, 0, 255, 255</gradiantColor>
+	<tylingType>
+		<type_of_tyling>5</type_of_tyling>
+		<Speed>2.3689, 0.286437</Speed>
+		<amnt_of_Lines____Columns>2, 2</amnt_of_Lines____Columns>
+	</tylingType>
+	<Cell>
+		<Amount_of_Cells>5, 5</Amount_of_Cells>
+		<offset>1, 1</offset>
+		<Mask_Layers_>3</Mask_Layers_>
+		<bckGrnd_Color_>255, 135, 242, 255</bckGrnd_Color_>
+		<thresholdNoise>0.467913</thresholdNoise>
+	</Cell>
+	<Edges>
+		<Thickness>1, 1</Thickness>
+	</Edges>
+</group>

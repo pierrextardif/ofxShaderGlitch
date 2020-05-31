@@ -8,7 +8,8 @@ void ofApp::setup()
     
     
     input = 0;
-    image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
+    //image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
+    image.loadImage("Textures/david.jpg");
     
 	font.loadFont(ofToDataPath( "Fonts/DIN.otf"), 8 );
     

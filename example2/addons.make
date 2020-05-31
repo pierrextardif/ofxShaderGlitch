@@ -1,0 +1,5 @@
+ofxGui
+ofxAutoReloadedShader
+ofxDEBUG_errors
+ofxImGui
+ofxPresetsManager
