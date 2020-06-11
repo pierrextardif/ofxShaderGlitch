@@ -1,6 +1,6 @@
 #version 120
 #extension GL_ARB_texture_rectangle : enable
-#define LOCALADDON
+//#define LOCALADDON
 
 #define M_PI 3.1415926535897932
 

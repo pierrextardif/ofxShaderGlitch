@@ -3,6 +3,8 @@
 #include "ofMain.h"
 
 #include "ofxShaderGlitch.h"
+
+#include "ofxGui.h"
 #include "ofxPresetsManager.h"
 
 class ofApp : public ofBaseApp {
@@ -29,10 +31,10 @@ public:
 	ofTrueTypeFont 	font;
 	char tempStr[512];
 
-
 	int input;
 	ofxShaderGlitch shaderGlitch;
 
-
+	ofParameterGroup params;
+	ofxPanel gui;
 };
 

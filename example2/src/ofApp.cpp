@@ -12,13 +12,12 @@ void ofApp::setupPresetsManager()
 	//-
 
 	//prepare the group and add subgroups that you want presetize:
-	ofParameterGroup g{ "GLITCH PARAMS" };
-	g.add(shaderGlitch.glitch.typeEffect);
-	g.add(shaderGlitch.glitch.typeTiling);
+	params = shaderGlitch.glitch.params;
+	gui.setup(params);
 
 	//added ofParametegrGroup to presetsManager
 	//define desired trigged keys
-	presetsManager.add(g, { '1', '2', '3', '4', '5', '6', '7', '8' });
+	presetsManager.add(params, { '1', '2', '3', '4', '5', '6', '7', '8' });
 	presetsManager.setup();
 
 	//customize layout
@@ -40,7 +39,6 @@ void ofApp::setupPresetsManager()
 void ofApp::setup()
 {
 	ofSetLogLevel(OF_LOG_VERBOSE);
-
 
 	input = 0;
 	//image.loadImage("Textures/'David'_by_Michelangelo_Fir_JBU002.jpg");
@@ -91,6 +89,9 @@ void ofApp::draw()
 	ofSetColor(255);
 	font.drawString(tempStr, pos.x, pos.y);
 
+	gui.draw();//use external ofApp gui panel
+	//shaderGlitch.drawGUI();//use addon internal gui panel
+
 }
 
 void ofApp::keyPressed(int key) {
@@ -107,6 +108,4 @@ void ofApp::switchInput() {
 		vidGrabber.initGrabber(1920, 1080);
 
 	}
-
-
 }

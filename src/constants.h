@@ -1,4 +1,4 @@
-#define LOCALADDON
+//#define LOCALADDON
 
 #ifdef LOCALADDON
     #define PATHTOSHADERS "../../../local_addons/ofxShaderGlitch/src/GlitchManager/Shaders/"

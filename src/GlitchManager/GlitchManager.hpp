@@ -59,6 +59,9 @@ class GlitchManager{
     ofFbo f;
     bool nonMaxAndContinuity;
     
+    ofParameter < bool > bEnable;
+	ofParameterGroup params;
+
 };
 
 #endif /* GlitchManager_hpp */

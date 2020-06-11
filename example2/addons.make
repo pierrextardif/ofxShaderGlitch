@@ -1,5 +1,6 @@
-ofxGui
 ofxAutoReloadedShader
 ofxDEBUG_errors
+ofxGui
 ofxImGui
 ofxPresetsManager
+ofxShaderGlitch
