@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <ofxShaderGlitch>
+	<reset>0</reset>
 	<enable>1</enable>
+	<blur>1</blur>
 	<Type_of_Tyling>
-		<type_of_tyling>2</type_of_tyling>
+		<type_of_tyling>0</type_of_tyling>
 		<Speed>1, 1</Speed>
 		<amnt_of_Lines____Columns>2, 2</amnt_of_Lines____Columns>
 		<Cell>
 			<offset>1, 1</offset>
-			<Mask_Layers_>1</Mask_Layers_>
+			<Mask_Layers_>0</Mask_Layers_>
 		</Cell>
 	</Type_of_Tyling>
 	<Type_of_Effect>

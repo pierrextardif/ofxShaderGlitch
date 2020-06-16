@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 <ofxShaderGlitch>
+	<reset>0</reset>
 	<enable>1</enable>
+	<blur>1</blur>
 	<Type_of_Tyling>
-		<type_of_tyling>0</type_of_tyling>
-		<Speed>1, 1</Speed>
-		<amnt_of_Lines____Columns>2, 2</amnt_of_Lines____Columns>
+		<type_of_tyling>7</type_of_tyling>
+		<Speed>-6.86796, -3.84839</Speed>
+		<amnt_of_Lines____Columns>58.7205, 83.6268</amnt_of_Lines____Columns>
 		<Cell>
 			<offset>1, 1</offset>
-			<Mask_Layers_>1</Mask_Layers_>
+			<Mask_Layers_>7</Mask_Layers_>
 		</Cell>
 	</Type_of_Tyling>
 	<Type_of_Effect>
-		<type_of_effect>0</type_of_effect>
-		<rectangle_Size>0.25, 0.25, 0.75, 0.75</rectangle_Size>
-		<alphaGradiant>0.8</alphaGradiant>
+		<type_of_effect>3</type_of_effect>
+		<rectangle_Size>0.489796, 0.422116, 0.0889217, 0.151396</rectangle_Size>
+		<alphaGradiant>0.158163</alphaGradiant>
 		<gradiantColor>200, 255, 0, 255</gradiantColor>
 		<backgroundColor>63, 223, 207, 255</backgroundColor>
 		<continuous>0</continuous>

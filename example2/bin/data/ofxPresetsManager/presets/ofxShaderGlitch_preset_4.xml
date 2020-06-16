@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <ofxShaderGlitch>
+	<reset>0</reset>
 	<enable>1</enable>
+	<blur>0</blur>
 	<Type_of_Tyling>
 		<type_of_tyling>0</type_of_tyling>
 		<Speed>1, 1</Speed>

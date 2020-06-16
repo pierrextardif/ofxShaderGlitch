@@ -1,23 +1,25 @@
 <?xml version="1.0"?>
 <ofxShaderGlitch>
+	<reset>0</reset>
 	<enable>1</enable>
+	<blur>1</blur>
 	<Type_of_Tyling>
-		<type_of_tyling>0</type_of_tyling>
-		<Speed>1, 1</Speed>
-		<amnt_of_Lines____Columns>2, 2</amnt_of_Lines____Columns>
+		<type_of_tyling>6</type_of_tyling>
+		<Speed>-3.74427, 1</Speed>
+		<amnt_of_Lines____Columns>158.345, 180.138</amnt_of_Lines____Columns>
 		<Cell>
-			<offset>1, 1</offset>
-			<Mask_Layers_>1</Mask_Layers_>
+			<offset>-0.349353, -0.264354</offset>
+			<Mask_Layers_>4</Mask_Layers_>
 		</Cell>
 	</Type_of_Tyling>
 	<Type_of_Effect>
-		<type_of_effect>0</type_of_effect>
-		<rectangle_Size>0.25, 0.25, 0.75, 0.75</rectangle_Size>
-		<alphaGradiant>0.8</alphaGradiant>
+		<type_of_effect>3</type_of_effect>
+		<rectangle_Size>0.411703, 0.557476, 0.75, 0.75</rectangle_Size>
+		<alphaGradiant>0.836735</alphaGradiant>
 		<gradiantColor>200, 255, 0, 255</gradiantColor>
-		<backgroundColor>63, 223, 207, 255</backgroundColor>
+		<backgroundColor>176, 223, 0, 255</backgroundColor>
 		<continuous>0</continuous>
-		<thresholdNoise>0.7</thresholdNoise>
+		<thresholdNoise>0.438776</thresholdNoise>
 		<feedback>
 			<feedback_ON__OFF>0</feedback_ON__OFF>
 		</feedback>

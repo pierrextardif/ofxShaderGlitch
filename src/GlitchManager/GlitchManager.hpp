@@ -46,6 +46,7 @@ class GlitchManager{
     ofParameter < float > thresholdNoise;
     
     void initGui();
+    void doReset();
     void drawGUI(){if(guiON)gui.draw();}
     
     
@@ -60,6 +61,8 @@ class GlitchManager{
     bool nonMaxAndContinuity;
     
     ofParameter < bool > bEnable;
+    ofParameter < bool > bEnableBlur;
+    ofParameter < bool > bReset;
 	ofParameterGroup params;
 
 };

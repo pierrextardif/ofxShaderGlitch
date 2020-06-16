@@ -42,6 +42,24 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 }
 
 //--------------------------------------------------------------
+void GlitchManager::doReset() {
+	typeT = 0;
+	speedMoves = ofVec2f(1,1);
+	amntLinesColumns = ofVec2f(2,2);
+	typeE = 0;
+	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
+	alphaGradiant = (0.8);
+	gradiantColor = (ofColor(200, 255, 0));
+	backgroundColor = (ofColor::turquoise);
+	continuous = (false);
+	thresholdNoise = (.7);
+
+	cells.offset = ofVec2f(1.0, 1.0);
+	cells.layers = 1;
+	feedbackEdge.activateFeedback = false;
+}
+
+//--------------------------------------------------------------
 void GlitchManager::initGui() {
 
 	guiON = false;
@@ -65,10 +83,14 @@ void GlitchManager::initGui() {
 
 	typeTiling.add(cells.cellGroup);
 	typeEffect.add(feedbackEdge.feedbackGUI);
+	bReset.set("reset", false);
 	bEnable.set("enable", true);
+	bEnableBlur.set("blur", true);
 
 	params.setName("ofxShaderGlitch");
+	params.add(bReset);
 	params.add(bEnable);
+	params.add(bEnableBlur);
 	params.add(typeTiling);
 	params.add(typeEffect);
 
@@ -80,11 +102,20 @@ void GlitchManager::initGui() {
 //--------------------------------------------------------------
 void GlitchManager::begin() {
 
+	//TODO:
+	if (bReset)
+	{
+		bReset = false;
+		doReset();
+	}
+
+
 	if (bEnable)
 	{
 		f.begin();
 		ofClear(0);
-		gaussian.begin();
+
+		if(bEnableBlur) gaussian.begin();
 	}
 
 }
@@ -93,7 +124,8 @@ void GlitchManager::begin() {
 void GlitchManager::end() {
 	if (bEnable)
 	{
-		gaussian.end();
+		if (bEnableBlur) gaussian.end();
+
 		f.end();
 
 		// feedback

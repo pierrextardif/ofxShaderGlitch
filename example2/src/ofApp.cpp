@@ -75,6 +75,8 @@ void ofApp::draw()
 {
 	shaderGlitch.begin();
 
+	//cout << ofGetUsingArbTex() << endl;
+
 	if (input == 0)image.draw(0, 0);
 	if (input == 1)t.draw(0, 0);
 
