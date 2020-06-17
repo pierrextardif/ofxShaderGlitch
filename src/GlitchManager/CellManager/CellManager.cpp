@@ -15,9 +15,9 @@ void CellManager::setup(){
 void CellManager::initGui(){
     
     float offsetValue = 1.0;
-    cellGroup.setName("Cell");
-    cellGroup.add(offset.set("offset", {offsetValue,offsetValue}, {-offsetValue,-offsetValue}, {offsetValue, offsetValue}));
-    cellGroup.add(layers.set("Mask Layers ", 1, 0, 10));
+    cellGroup.setName("CELL");
+    cellGroup.add(offset.set("OFFSET", {offsetValue,offsetValue}, {-offsetValue,-offsetValue}, {offsetValue, offsetValue}));
+    cellGroup.add(layers.set("MASK LAYERS", 1, 0, 10));
 }
 
 //--------------------------------------------------------------

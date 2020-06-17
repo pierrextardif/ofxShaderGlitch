@@ -11,8 +11,8 @@
 void FeedbackManager::setup(){
     initialised = false;
     
-    feedbackGUI.setName("feedback");
-    feedbackGUI.add(activateFeedback.set("feedback ON /OFF", false));
+    feedbackGUI.setName("FEEDBACK");
+    feedbackGUI.add(activateFeedback.set("ENABLE FEEDBACK", false));
     
 }
 

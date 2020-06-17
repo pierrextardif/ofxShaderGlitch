@@ -65,27 +65,27 @@ void GlitchManager::initGui() {
 	guiON = false;
 	gui.setup();
 
-	typeTiling.setName("Type of Tyling");
-	typeEffect.setName("Type of Effect");
+	typeTiling.setName("TYPE OF TYLING");
+	typeEffect.setName("TYPE OF EFFECT");
 
-	typeTiling.add(typeT.set("type of tyling", 0, 0, 10));
-	typeTiling.add(speedMoves.set("Speed", { 1,1 }, { -10, -10 }, { 10,10 }));
-	typeTiling.add(amntLinesColumns.set("amnt of Lines // Columns", { 2,2 }, { 1,1 }, { 300,300 }));
+	typeTiling.add(typeT.set("TYPE OF TYLING", 0, 0, 10));
+	typeTiling.add(speedMoves.set("SPEED", { 1,1 }, { -10, -10 }, { 10,10 }));
+	typeTiling.add(amntLinesColumns.set("LINES / COLUMNS SIZE", { 2,2 }, { 1,1 }, { 300,300 }));
 
 
-	typeEffect.add(typeE.set("type of effect", 0, 0, 10));
-	typeEffect.add(props.set("rectangle Size", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0, 0, 0, 0), ofVec4f(1, 1, 1, 1)));
-	typeEffect.add(alphaGradiant.set("alphaGradiant", 0.8, 0, 1));
-	typeEffect.add(gradiantColor.set("gradiantColor", ofColor(200, 255, 0)));
-	typeEffect.add(backgroundColor.set("backgroundColor", ofColor::turquoise));
-	typeEffect.add(continuous.set("continuous", false));
-	typeEffect.add(thresholdNoise.set("thresholdNoise", .7, 0., 1.0));
+	typeEffect.add(typeE.set("TYPE OF EFFECT", 0, 0, 10));
+	typeEffect.add(props.set("RECTANGLE SIZE", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0, 0, 0, 0), ofVec4f(1, 1, 1, 1)));
+	typeEffect.add(alphaGradiant.set("ALPHA GRADIANT", 0.8, 0, 1));
+	typeEffect.add(gradiantColor.set("GRADIANT COLOR", ofColor(200, 255, 0)));
+	typeEffect.add(backgroundColor.set("BACKGROUND COLOR", ofColor::turquoise));
+	typeEffect.add(continuous.set("CONTINUOUS", false));
+	typeEffect.add(thresholdNoise.set("THRESHOLD NOISE", .7, 0., 1.0));
 
 	typeTiling.add(cells.cellGroup);
 	typeEffect.add(feedbackEdge.feedbackGUI);
-	bReset.set("reset", false);
-	bEnable.set("enable", true);
-	bEnableBlur.set("blur", true);
+	bReset.set("RESET", false);
+	bEnable.set("ENABLE", true);
+	bEnableBlur.set("BLUR", true);
 
 	params.setName("ofxShaderGlitch");
 	params.add(bReset);
