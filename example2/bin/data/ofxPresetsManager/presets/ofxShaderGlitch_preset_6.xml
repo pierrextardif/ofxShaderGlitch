@@ -5,8 +5,8 @@
 	<blur>1</blur>
 	<Type_of_Tyling>
 		<type_of_tyling>6</type_of_tyling>
-		<Speed>-3.74427, 1</Speed>
-		<amnt_of_Lines____Columns>158.345, 180.138</amnt_of_Lines____Columns>
+		<Speed>-1.34944, 1</Speed>
+		<amnt_of_Lines____Columns>225.281, 300</amnt_of_Lines____Columns>
 		<Cell>
 			<offset>-0.349353, -0.264354</offset>
 			<Mask_Layers_>4</Mask_Layers_>
@@ -14,7 +14,7 @@
 	</Type_of_Tyling>
 	<Type_of_Effect>
 		<type_of_effect>3</type_of_effect>
-		<rectangle_Size>0.411703, 0.557476, 0.75, 0.75</rectangle_Size>
+		<rectangle_Size>0.333611, 0.557476, 0.75, 0.75</rectangle_Size>
 		<alphaGradiant>0.836735</alphaGradiant>
 		<gradiantColor>200, 255, 0, 255</gradiantColor>
 		<backgroundColor>176, 223, 0, 255</backgroundColor>

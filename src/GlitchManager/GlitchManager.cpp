@@ -44,8 +44,8 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 //--------------------------------------------------------------
 void GlitchManager::doReset() {
 	typeT = 0;
-	speedMoves = ofVec2f(1,1);
-	amntLinesColumns = ofVec2f(2,2);
+	speedMoves = ofVec2f(1, 1);
+	amntLinesColumns = ofVec2f(2, 2);
 	typeE = 0;
 	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
 	alphaGradiant = (0.8);
@@ -115,7 +115,7 @@ void GlitchManager::begin() {
 		f.begin();
 		ofClear(0);
 
-		if(bEnableBlur) gaussian.begin();
+		if (bEnableBlur) gaussian.begin();
 	}
 
 }
@@ -155,3 +155,4 @@ void GlitchManager::end() {
 		feedbackEdge.end(resImg);
 	}
 }
+

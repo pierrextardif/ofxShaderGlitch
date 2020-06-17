@@ -46,7 +46,6 @@ class GlitchManager{
     ofParameter < float > thresholdNoise;
     
     void initGui();
-    void doReset();
     void drawGUI(){if(guiON)gui.draw();}
     
     
@@ -65,6 +64,7 @@ class GlitchManager{
     ofParameter < bool > bReset;
 	ofParameterGroup params;
 
+    void doReset();
 };
 
 #endif /* GlitchManager_hpp */

@@ -4,22 +4,22 @@
 	<enable>1</enable>
 	<blur>1</blur>
 	<Type_of_Tyling>
-		<type_of_tyling>7</type_of_tyling>
-		<Speed>-6.03499, 1</Speed>
-		<amnt_of_Lines____Columns>26.0308, 220.611</amnt_of_Lines____Columns>
+		<type_of_tyling>5</type_of_tyling>
+		<Speed>1.0454, 1.0454</Speed>
+		<amnt_of_Lines____Columns>21.3609, 1</amnt_of_Lines____Columns>
 		<Cell>
-			<offset>1, 1</offset>
+			<offset>0.521883, -0.0943569</offset>
 			<Mask_Layers_>1</Mask_Layers_>
 		</Cell>
 	</Type_of_Tyling>
 	<Type_of_Effect>
-		<type_of_effect>0</type_of_effect>
-		<rectangle_Size>0.25, 0.25, 0.75, 0.75</rectangle_Size>
-		<alphaGradiant>0.8</alphaGradiant>
-		<gradiantColor>200, 255, 0, 255</gradiantColor>
-		<backgroundColor>63, 223, 207, 255</backgroundColor>
-		<continuous>0</continuous>
-		<thresholdNoise>0.7</thresholdNoise>
+		<type_of_effect>6</type_of_effect>
+		<rectangle_Size>0.182632, 0.25, 1, 1</rectangle_Size>
+		<alphaGradiant>0.989796</alphaGradiant>
+		<gradiantColor>0, 255, 104, 255</gradiantColor>
+		<backgroundColor>255, 113, 0, 255</backgroundColor>
+		<continuous>1</continuous>
+		<thresholdNoise>0.295918</thresholdNoise>
 		<feedback>
 			<feedback_ON__OFF>0</feedback_ON__OFF>
 		</feedback>
