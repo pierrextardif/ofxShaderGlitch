@@ -31,7 +31,7 @@ void FeedbackManager::init(glm::vec2 resImg){
         string path = PATHTOSHADERS;
         path.append( "Feedback/main");
         
-        cout << "path = " << path << endl;
+        //cout << "path = " << path << endl;
         fShader.load(path);
         
     }
