@@ -21,7 +21,9 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 	path.append("main");
 
 	shader.load(path);
-	shader.setMillisBetweenFileCheck(200);
+	shader.disableWatchFiles();
+	//shader.setMillisBetweenFileCheck(200);
+	//shader.setMillisBetweenFileCheck(200);
 
 	cells.shader = &shader;
 
