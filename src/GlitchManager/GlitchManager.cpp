@@ -21,9 +21,8 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 	path.append("main");
 
 	shader.load(path);
-	shader.disableWatchFiles();
-	//shader.setMillisBetweenFileCheck(200);
-	//shader.setMillisBetweenFileCheck(200);
+	shader.setMillisBetweenFileCheck(200);
+	//shader.disableWatchFiles();//disable live reloading bc I will not edit the shaders..
 
 	cells.shader = &shader;
 
@@ -44,36 +43,17 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 }
 
 //--------------------------------------------------------------
-void GlitchManager::doReset() {
-	typeT = 0;
-	speedMoves = ofVec2f(1, 1);
-	amntLinesColumns = ofVec2f(2, 2);
-	typeE = 0;
-	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
-	alphaGradiant = (0.8);
-	gradiantColor = (ofColor(200, 255, 0));
-	backgroundColor = (ofColor::turquoise);
-	continuous = (false);
-	thresholdNoise = (.7);
-
-	cells.offset = ofVec2f(1.0, 1.0);
-	cells.layers = 1;
-	feedbackEdge.activateFeedback = false;
-}
-
-//--------------------------------------------------------------
 void GlitchManager::initGui() {
 
 	guiON = false;
 	gui.setup();
 
-	typeTiling.setName("TYPE OF TYLING");
-	typeEffect.setName("TYPE OF EFFECT");
+	typeTiling.setName("A TYPE OF TYLING");
+	typeEffect.setName("B TYPE OF EFFECT");
 
 	typeTiling.add(typeT.set("TYPE OF TYLING", 0, 0, 10));
 	typeTiling.add(speedMoves.set("SPEED", { 1,1 }, { -10, -10 }, { 10,10 }));
-	typeTiling.add(amntLinesColumns.set("LINES / COLUMNS SIZE", { 2,2 }, { 1,1 }, { 300,300 }));
-
+	typeTiling.add(amntLinesColumns.set("LINES / COLUMNS AMNT", { 2,2 }, { 1,1 }, { 300,300 }));
 
 	typeEffect.add(typeE.set("TYPE OF EFFECT", 0, 0, 10));
 	typeEffect.add(props.set("RECTANGLE SIZE", ofVec4f(0.25, 0.25, 0.75, 0.75), ofVec4f(0, 0, 0, 0), ofVec4f(1, 1, 1, 1)));
@@ -85,20 +65,21 @@ void GlitchManager::initGui() {
 
 	typeTiling.add(cells.cellGroup);
 	typeEffect.add(feedbackEdge.feedbackGUI);
-	bReset.set("RESET", false);
+
 	bEnable.set("ENABLE", true);
 	bEnableBlur.set("BLUR", true);
+	bReset.set("RESET", false);
+
+	bReset.setSerializable(false);
 
 	params.setName("ofxShaderGlitch");
-	params.add(bReset);
 	params.add(bEnable);
 	params.add(bEnableBlur);
+	params.add(bReset);
 	params.add(typeTiling);
 	params.add(typeEffect);
 
 	gui.add(params);
-
-
 }
 
 //--------------------------------------------------------------
@@ -110,7 +91,6 @@ void GlitchManager::begin() {
 		bReset = false;
 		doReset();
 	}
-
 
 	if (bEnable)
 	{
@@ -130,7 +110,7 @@ void GlitchManager::end() {
 
 		f.end();
 
-		// feedback
+		//feedback
 		if (feedbackEdge.activateFeedback)typeT = typeE = -1;
 
 		feedbackEdge.begin();
@@ -156,5 +136,23 @@ void GlitchManager::end() {
 		shader.end();
 		feedbackEdge.end(resImg);
 	}
+}
+
+//--------------------------------------------------------------
+void GlitchManager::doReset() {
+	typeT = 0;
+	speedMoves = ofVec2f(1, 1);
+	amntLinesColumns = ofVec2f(2, 2);
+	typeE = 0;
+	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
+	alphaGradiant = (0.8);
+	gradiantColor = (ofColor(200, 255, 0));
+	backgroundColor = (ofColor::turquoise);
+	continuous = (false);
+	thresholdNoise = (.7);
+
+	cells.offset = ofVec2f(1.0, 1.0);
+	cells.layers = 1;
+	feedbackEdge.activateFeedback = false;
 }
 

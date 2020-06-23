@@ -59,8 +59,8 @@ void ofApp::draw()
 		ofSetColor(255);
 		font.drawString(tempStr, pos.x, pos.y);
 
-		//shaderGlitch.drawGUI();//use addon internal gui panel
-		////gui.draw();//use external ofApp gui panel
+		////shaderGlitch.drawGUI();//use addon internal gui panel
+		//gui.draw();//use external ofApp gui panel
 	}
 
 	shaderGlitch.drawGUI();//use addon internal gui panel
@@ -70,6 +70,7 @@ void ofApp::keyPressed(int key) {
 	if (key == 'i') switchInput();
 	if (key == OF_KEY_TAB) {
 		bShowGui = !bShowGui;
+
 		shaderGlitch.setVisibleGui(bShowGui);
 		//shaderGlitch.setToggleVisibleGui();
 	}
@@ -80,7 +81,7 @@ void ofApp::switchInput() {
 	if (input > 1)input = 0;
 
 	if (input == 1 && !vidGrabber.isInitialized()) {
-		vidGrabber.setDeviceID(1);
+		vidGrabber.setDeviceID(0);
 		vidGrabber.setDesiredFrameRate(60);
 		vidGrabber.initGrabber(1920, 1080);
 	}

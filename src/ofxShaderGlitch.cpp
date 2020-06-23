@@ -48,6 +48,9 @@ void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs) {
 	if (keyArgs.key == ' ') {
 		presetsManager.setToggleRandomizerPreset();
 	}
+	if (keyArgs.key == OF_KEY_BACKSPACE){
+		presetsManager.randomizePreset();
+	}
 }
 
 //--------------------------------------------------------------

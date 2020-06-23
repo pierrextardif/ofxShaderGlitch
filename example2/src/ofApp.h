@@ -4,7 +4,7 @@
 
 #include "ofxShaderGlitch.h"
 
-//#include "ofxGui.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp {
 

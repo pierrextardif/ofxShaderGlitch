@@ -12,13 +12,13 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
-// for faster live coding
+//for faster live coding
 #include "ofxAutoReloadedShader.h"
 
-// Cells
+//Cells
 #include "CellManager/CellManager.hpp"
 
-// Feedback
+//Feedback
 #include "FeedbackManager/FeedbackManager.hpp"
 
 class GlitchManager{
@@ -47,8 +47,7 @@ class GlitchManager{
     
     void initGui();
     void drawGUI(){if(guiON)gui.draw();}
-    
-    
+        
     ofxPanel gui;
     
     glm::vec2 resImg;

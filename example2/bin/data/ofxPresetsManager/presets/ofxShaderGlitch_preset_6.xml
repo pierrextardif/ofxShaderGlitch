@@ -1,27 +1,26 @@
 <?xml version="1.0"?>
 <ofxShaderGlitch>
-	<reset>0</reset>
-	<enable>1</enable>
-	<blur>1</blur>
-	<Type_of_Tyling>
-		<type_of_tyling>6</type_of_tyling>
-		<Speed>-1.34944, 1</Speed>
-		<amnt_of_Lines____Columns>225.281, 300</amnt_of_Lines____Columns>
-		<Cell>
-			<offset>-0.349353, -0.264354</offset>
-			<Mask_Layers_>4</Mask_Layers_>
-		</Cell>
-	</Type_of_Tyling>
-	<Type_of_Effect>
-		<type_of_effect>3</type_of_effect>
-		<rectangle_Size>0.333611, 0.557476, 0.75, 0.75</rectangle_Size>
-		<alphaGradiant>0.836735</alphaGradiant>
-		<gradiantColor>200, 255, 0, 255</gradiantColor>
-		<backgroundColor>176, 223, 0, 255</backgroundColor>
-		<continuous>0</continuous>
-		<thresholdNoise>0.438776</thresholdNoise>
-		<feedback>
-			<feedback_ON__OFF>0</feedback_ON__OFF>
-		</feedback>
-	</Type_of_Effect>
+	<ENABLE>1</ENABLE>
+	<BLUR>1</BLUR>
+	<A_TYPE_OF_TYLING>
+		<TYPE_OF_TYLING>4</TYPE_OF_TYLING>
+		<SPEED>9.69787, -6.58925</SPEED>
+		<LINES___COLUMNS_AMNT>241.198, 262.332</LINES___COLUMNS_AMNT>
+		<CELL>
+			<OFFSET>0.278115, -0.480148</OFFSET>
+			<MASK_LAYERS>7</MASK_LAYERS>
+		</CELL>
+	</A_TYPE_OF_TYLING>
+	<B_TYPE_OF_EFFECT>
+		<TYPE_OF_EFFECT>6</TYPE_OF_EFFECT>
+		<RECTANGLE_SIZE>0.557054, 0.357219, 0.633717, 0.411389</RECTANGLE_SIZE>
+		<ALPHA_GRADIANT>0.842463</ALPHA_GRADIANT>
+		<GRADIANT_COLOR>200, 255, 0, 255</GRADIANT_COLOR>
+		<BACKGROUND_COLOR>63, 223, 207, 255</BACKGROUND_COLOR>
+		<CONTINUOUS>1</CONTINUOUS>
+		<THRESHOLD_NOISE>0.000640889</THRESHOLD_NOISE>
+		<FEEDBACK>
+			<ENABLE_FEEDBACK>0</ENABLE_FEEDBACK>
+		</FEEDBACK>
+	</B_TYPE_OF_EFFECT>
 </ofxShaderGlitch>
