@@ -5,6 +5,11 @@
 //  Created by Pierre Tardif on 10/05/2020.
 //
 
+///	TODO:
+///	+	reset per zone
+///	+	ndi addon
+///	+	
+
 #ifndef ofxShaderGlitch_hpp
 #define ofxShaderGlitch_hpp
 

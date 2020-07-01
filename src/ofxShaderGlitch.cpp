@@ -69,7 +69,7 @@ void ofxShaderGlitch::setupPresetsManager()
 
 	//added ofParametegrGroup to presetsManager
 	//define desired trigged keys
-	presetsManager.add(params, { '1', '2', '3', '4', '5', '6', '7', '8' });
+	presetsManager.add(params, { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
 	presetsManager.setup();
 
 	//customize layout
