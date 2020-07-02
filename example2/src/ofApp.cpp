@@ -24,9 +24,10 @@ void ofApp::update()
 {
 	if (input == 1) {
 		vidGrabber.update();
-		if (vidGrabber.isFrameNew()) {
-			t = vidGrabber.getTexture();
-		}
+
+		//if (vidGrabber.isFrameNew()) {
+		//	t = vidGrabber.getTexture();
+		//}
 	}
 }
 
@@ -43,8 +44,13 @@ void ofApp::draw()
 
 	//cout << ofGetUsingArbTex() << endl;
 
-	if (input == 0)image.draw(0, 0);
-	if (input == 1)t.draw(0, 0);
+	if (input == 0){
+		image.draw(0, 0);
+	}
+	else if (input == 1){
+		//t.draw(0, 0);
+		vidGrabber.draw(0, 0, ofGetWidth(), ofGetHeight());
+	}
 
 	shaderGlitch.end();
 
@@ -81,8 +87,9 @@ void ofApp::switchInput() {
 	if (input > 1)input = 0;
 
 	if (input == 1 && !vidGrabber.isInitialized()) {
-		vidGrabber.setDeviceID(0);
-		vidGrabber.setDesiredFrameRate(60);
+		int _d = 0;
+		vidGrabber.setDeviceID(_d);
+		//vidGrabber.setDesiredFrameRate(60);
 		vidGrabber.initGrabber(1920, 1080);
 	}
 }
