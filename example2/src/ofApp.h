@@ -4,7 +4,7 @@
 
 #include "ofxShaderGlitch.h"
 
-#include "ofxGui.h"
+//#include "ofxGui.h"
 
 class ofApp : public ofBaseApp {
 
@@ -30,9 +30,10 @@ public:
 	//--
 
 	ofxShaderGlitch shaderGlitch;
-	int input;
-	bool bShowGui = false;
+	int indexInput;
+	bool bShowGui = true;
 
+	int indexImage;
 	//ofxPanel gui;
 	//ofParameterGroup params;
 };

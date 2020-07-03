@@ -7,16 +7,19 @@
 
 #include "ofxShaderGlitch.h"
 
-
+//--------------------------------------------------------------
 void ofxShaderGlitch::exit() {
 	presetsManager.exit();//only required to store some gui/class settings.
+	ofRemoveListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
 }
 
+//--------------------------------------------------------------
 void ofxShaderGlitch::setup() {
 	//presetsManager
 	setupPresetsManager();
 
 	ofAddListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
+	ofAddListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
 }
 
 //--------------------------------------------------------------
@@ -27,15 +30,11 @@ void ofxShaderGlitch::begin() {
 //--------------------------------------------------------------
 void ofxShaderGlitch::end() {
 	glitch.end();
-	
-	//drawGUI();
 }
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::drawGUI() {
-	//glitch.drawGUI();
-
-	if(bVisibleGui) gui.draw();
+	if (bVisibleGui) gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -48,7 +47,7 @@ void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs) {
 	if (keyArgs.key == ' ') {
 		presetsManager.setToggleRandomizerPreset();
 	}
-	if (keyArgs.key == OF_KEY_BACKSPACE){
+	if (keyArgs.key == OF_KEY_BACKSPACE) {
 		presetsManager.randomizePreset();
 	}
 }
@@ -66,6 +65,10 @@ void ofxShaderGlitch::setupPresetsManager()
 	//prepare the group and add subgroups that you want presetize:
 	params = glitch.params;
 	gui.setup(params);
+
+	//-
+
+	//presets
 
 	//added ofParametegrGroup to presetsManager
 	//define desired trigged keys
@@ -85,4 +88,78 @@ void ofxShaderGlitch::setupPresetsManager()
 	//there's a kind of faster 'memory mode' that stores presets on a vector, and to xml files only on exit. 
 	//update, draw and autosave its handled by the addon. only must call exit method.
 	//api can disable trigger keys, hide/show gui and customize layout...etc
+}
+
+//--------------------------------------------------------------
+void ofxShaderGlitch::Changed_Params(ofAbstractParameter &e)
+{
+	string name = e.getName();
+
+	if ((name != "exclude") &&
+		(name != glitch.typeT.getName()) &&
+		(name != glitch.typeE.getName())
+		)
+	{
+		ofLogNotice(__FUNCTION__) << name << " : " << e;
+	}
+
+	//-
+
+	//breaks presets..
+	//if (name == "ENABLE FEEDBACK")
+	//{
+	//	if (!glitch.feedbackEdge.activateFeedback.get()) {
+	//		glitch.typeT = 0;
+	//		glitch.typeE = 0;
+	//	}
+	//}
+
+	//if (name == glitch.typeT.getName())
+	//{
+	//	refreshGUI();
+	//}
+}
+
+//--------------------------------------------------------------
+void ofxShaderGlitch::refreshGUI()
+{
+/*
+	5 - > 9 : patterns generation - parameters to control are : 
+	Mask Layers for tyling 5, 
+	thresholdNoise for tyling 6, 
+	continuous for 7->9.
+	Speed.y is controlling the speed of the effects for tyling 5 -> 9.
+	RectangleSize controls the gradiant rect boundaries, and gradiantColor controls its color.
+	10 : makes the effect apply to the whole screen.
+	Tyling is processed in the main.frag by setting up the prop variable.
+*/
+	//gui.minimizeAll();
+
+	auto &gA = gui.getGroup(glitch.typeTiling.getName());
+	auto &gB = gui.getGroup(glitch.typeEffect.getName());
+
+	//mode 1
+	switch (glitch.typeT.get())
+	{
+	case 1:
+	case 2:
+	case 3:
+		gA.maximize();
+		gA.getGroup("CELL").minimize();
+		gB.minimize();
+		break;
+	case 4:
+		gA.getGroup("CELL").maximize();
+		gA.getGroup("CELL").getGroup("OFFSET").minimize();
+		break;
+	case 5://mask layers
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+		gA.minimize();
+		gA.getGroup("CELL").minimize();
+		gB.maximize();
+		break;
+	}
 }

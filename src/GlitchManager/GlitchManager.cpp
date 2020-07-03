@@ -45,9 +45,6 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 //--------------------------------------------------------------
 void GlitchManager::initGui() {
 
-	guiON = false;
-	gui.setup();
-
 	typeTiling.setName("A TYPE OF TYLING");
 	typeEffect.setName("B TYPE OF EFFECT");
 
@@ -70,22 +67,82 @@ void GlitchManager::initGui() {
 	bEnableBlur.set("BLUR", true);
 	bReset.set("RESET", false);
 
-	bReset.setSerializable(false);
-
 	params.setName("ofxShaderGlitch");
 	params.add(bEnable);
 	params.add(bEnableBlur);
 	params.add(bReset);
 	params.add(typeTiling);
 	params.add(typeEffect);
+	params.add(typeEffectName.set("NAME", ""));
 
+	bReset.setSerializable(false);
+	typeEffectName.setSerializable(false);
+
+	//gui
+	gui.setup();
 	gui.add(params);
+	guiON = false;
+}
+
+//--------------------------------------------------------------
+void GlitchManager::refresh() {
+	/*
+	0 : glitch
+	1 : texture Shift - works best withj tyling 7.
+	2 : texture shift prop - shift on texture proportional to prop.Works best with tyling 8.
+	3 : lateral shift : shift the texture horizontally following the amnt of lines // columns, to change the direction to horizontal, change the last argument of lateralSlider to true.
+	4 : shift with noise per cell direction change controlled by continuous.
+	5 & 6 : grad center + inner flip coords - rect boundaries are controlled by the rectangle size, and the amount of sections by amnt of lines // columns. The functions texFlipV in main.frag are used here, with the last 2 arguments adding a flip on the section coordinate, and a gradiant on the rectangle ( in this case true and true, therefore grad + flip is processed on the image).
+	7 : bright lines sections of lines of different colors.the first argument gives the direction of the lines - in this case y - .The parameter continuous de activates the thresholding on gb, if ON, which makes it go less flashy.The Mask Layers control the amount of colors layers added.Works best with 2 layers.
+	8: background color // invert background color - outside pattern detection.
+	9 : gradiant color controlled by rectangle size and gradiant color, and alphaGradiant.
+	10 : gradiant color + invert same as above with inverted color for inner rectangle section.
+	*/
+
+	switch (typeE.get())
+	{
+	case 0:
+		typeEffectName = "GLITCH";
+		break;
+	case 1:
+		typeEffectName = "TEXTURE SHIFT";
+		break;
+	case 2:
+		typeEffectName = "TEXTURE SHIFT PROP";
+		break;
+	case 3:
+		typeEffectName = "LATERAL SHIFT";
+		break;
+	case 4:
+		typeEffectName = "SHIFT WITH NOISE";
+		break;
+	case 5:
+	case 6:
+		typeEffectName = "GRAD CENTER FLIP";
+		break;
+	case 7:
+		typeEffectName = "BRIGHT LINES";
+		break;
+	case 8:
+		typeEffectName = "BG INV PATTERN";
+		break;
+	case 9:
+		typeEffectName = "GRADIANT COLOR RECT";
+		break;
+	case 10:
+		typeEffectName = "GRADIANT COLOR INV";
+		break;
+	}
 }
 
 //--------------------------------------------------------------
 void GlitchManager::begin() {
+	//changed
+	if (typeE.get() != typeE_PRE) {
+		typeE_PRE = typeE;
+		refresh();
+	}
 
-	//TODO:
 	if (bReset)
 	{
 		bReset = false;
@@ -111,7 +168,8 @@ void GlitchManager::end() {
 		f.end();
 
 		//feedback
-		if (feedbackEdge.activateFeedback)typeT = typeE = -1;
+		if (feedbackEdge.activateFeedback)
+			typeT = typeE = -1;
 
 		feedbackEdge.begin();
 		shader.begin();
@@ -142,7 +200,7 @@ void GlitchManager::end() {
 void GlitchManager::doReset() {
 	typeT = 0;
 	speedMoves = ofVec2f(1, 1);
-	amntLinesColumns = ofVec2f(2, 2);
+	amntLinesColumns = ofVec2f(1, 1);
 	typeE = 0;
 	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
 	alphaGradiant = (0.8);

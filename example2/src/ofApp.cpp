@@ -4,15 +4,20 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	ofSetLogLevel(OF_LOG_VERBOSE);
+	//ofSetLogLevel(OF_LOG_VERBOSE);
 
-	input = 0;
-	image.loadImage("Textures/david.jpg");
+	indexInput = 0;
+
+	indexImage = 0;
+	image.loadImage("Textures/TheDavidFace.png");
+	//image.loadImage("Textures/david.jpg");
+	//image.loadImage("Textures/jjfGOPRO.png");
 
 	font.loadFont(ofToDataPath("Fonts/DIN.otf"), 8);
 
 	//GlitchShader
 	shaderGlitch.setup();
+	shaderGlitch.setVisibleGui(bShowGui);
 
 	//params = shaderGlitch.glitch.params;
 	//gui.setup(params);
@@ -22,7 +27,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	if (input == 1) {
+	if (indexInput == 1) {
 		vidGrabber.update();
 
 		//if (vidGrabber.isFrameNew()) {
@@ -41,20 +46,25 @@ void ofApp::exit()
 void ofApp::draw()
 {
 	shaderGlitch.begin();
+	{
+		//cout << ofGetUsingArbTex() << endl;
 
-	//cout << ofGetUsingArbTex() << endl;
-
-	if (input == 0){
-		image.draw(0, 0);
+		//draw scene
+		if (indexInput == 0) {
+			ofRectangle r(0, 0, image.getWidth(), image.getHeight());
+			r.scaleTo(ofGetWindowRect());
+			image.draw(r.x, r.y, r.width, r.height);
+		}
+		else if (indexInput == 1) {
+			//t.draw(0, 0);
+			vidGrabber.draw(0, 0, ofGetWidth(), ofGetHeight());
+		}
 	}
-	else if (input == 1){
-		//t.draw(0, 0);
-		vidGrabber.draw(0, 0, ofGetWidth(), ofGetHeight());
-	}
-
 	shaderGlitch.end();
 
 	//--
+
+	//gui
 
 	if (bShowGui) {
 		//draw the FPS
@@ -73,20 +83,42 @@ void ofApp::draw()
 }
 
 void ofApp::keyPressed(int key) {
+	//input camera or image
 	if (key == 'i') switchInput();
+
+	//gui
 	if (key == OF_KEY_TAB) {
 		bShowGui = !bShowGui;
 
 		shaderGlitch.setVisibleGui(bShowGui);
 		//shaderGlitch.setToggleVisibleGui();
 	}
+	
+	//browse images
+	if (key == OF_KEY_DOWN) {
+		indexImage++;
+		if (indexImage == 3) indexImage = 0;
+
+		switch (indexImage)
+		{
+		case 0:
+			image.loadImage("Textures/TheDavidFace.png");
+			break;
+		case 1:
+			image.loadImage("Textures/david.jpg");
+			break;
+		case 2:
+			image.loadImage("Textures/jjfGOPRO.png");
+			break;
+		}
+	}
 }
 
 void ofApp::switchInput() {
-	input += 1;
-	if (input > 1)input = 0;
+	indexInput += 1;
+	if (indexInput > 1)indexInput = 0;
 
-	if (input == 1 && !vidGrabber.isInitialized()) {
+	if (indexInput == 1 && !vidGrabber.isInitialized()) {
 		int _d = 0;
 		vidGrabber.setDeviceID(_d);
 		//vidGrabber.setDesiredFrameRate(60);

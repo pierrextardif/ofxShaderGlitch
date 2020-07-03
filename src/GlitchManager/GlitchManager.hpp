@@ -32,10 +32,12 @@ class GlitchManager{
     void setup(glm::vec2 sizeImg);
     void begin();
     void end();
+    void refresh();
     
     bool guiON;
     ofParameterGroup typeTiling, typeEffect;
     ofParameter < int > typeT, typeE;
+	int typeE_PRE = -1;
     ofParameter < ofVec2f > amntLinesColumns;
     ofParameter < ofVec2f > speedMoves;
     ofParameter < ofVec4f > props;
@@ -61,6 +63,7 @@ class GlitchManager{
     ofParameter < bool > bEnable;
     ofParameter < bool > bEnableBlur;
     ofParameter < bool > bReset;
+    ofParameter < string> typeEffectName;
 	ofParameterGroup params;
 
     void doReset();

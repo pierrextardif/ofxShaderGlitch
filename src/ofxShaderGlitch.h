@@ -7,7 +7,6 @@
 
 ///	TODO:
 ///	+	reset per zone
-///	+	ndi addon
 ///	+	
 
 #ifndef ofxShaderGlitch_hpp
@@ -42,12 +41,16 @@ class ofxShaderGlitch{
     void begin();
     void end();
     void drawGUI();
+    void refreshGUI();
 
 	//presetsManager
 	ofxPresetsManager presetsManager;
 
 	void setupPresetsManager();
+	
 	ofParameterGroup params;
+	void Changed_Params(ofAbstractParameter &e);
+
 	ofxPanel gui;
 	bool bVisibleGui = false;
 	void setVisibleGui(bool b) {
