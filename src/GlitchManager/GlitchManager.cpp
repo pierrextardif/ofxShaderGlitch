@@ -21,7 +21,7 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 	path.append("main");
 
 	shader.load(path);
-	shader.setMillisBetweenFileCheck(200);
+	shader.setMillisBetweenFileCheck(200);//TODO:?required if we are not live editing?
 	//shader.disableWatchFiles();//disable live reloading bc I will not edit the shaders..
 
 	cells.shader = &shader;
@@ -39,7 +39,6 @@ void GlitchManager::setup(glm::vec2 imgSize) {
 
 	// ==== feedback ====
 	feedbackEdge.init(resImg);
-
 }
 
 //--------------------------------------------------------------

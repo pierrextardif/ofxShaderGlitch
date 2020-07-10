@@ -15,6 +15,7 @@ void ofxShaderGlitch::exit() {
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::setup() {
+
 	//presetsManager
 	setupPresetsManager();
 
@@ -39,26 +40,32 @@ void ofxShaderGlitch::drawGUI() {
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs) {
-	if (keyArgs.key == 'g')glitch.guiON = !glitch.guiON;
-	if (keyArgs.key == 'c') {
+	if (keyArgs.key == 'g')
+		glitch.guiON = !glitch.guiON;
+
+	else if (keyArgs.key == 'c') {
 		glitch.nonMaxAndContinuity = !glitch.nonMaxAndContinuity;
 		//cout << " maxContinuity = " << ofToString(glitch.nonMaxAndContinuity) << endl;
 	}
-	if (keyArgs.key == ' ') {
+
+	else if (keyArgs.key == ' ') {
 		presetsManager.setToggleRandomizerPreset();
 	}
-	if (keyArgs.key == OF_KEY_BACKSPACE) {
-		presetsManager.randomizePreset();
+
+	else if (keyArgs.key == OF_KEY_BACKSPACE) {
+		presetsManager.doRandomizePresetSelected();
+		presetsManager.doRandomizePresetFromFavs();
 	}
 }
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::setupPresetsManager()
 {
-	////optional folders. same as defaults. look on /data folder
-	//presetsManager.setPath_GlobalFolder("ofxPresetsManager");//main container folder
-	//presetsManager.setPath_KitFolder("presets");//from kit/livePanel presets
-	//presetsManager.setPath_PresetsFolder("archive");//for browser file presets
+	//customize
+	presetsManager.setPath_GlobalFolder(path_GLOBAL_Folder + "/ofxPresetsManager");
+	presetsManager.setPath_KitFolder("presets");
+	presetsManager.setPath_PresetsFolder("archive");
+	presetsManager.setPath_ControlSettings("settings");
 
 	//-
 
@@ -88,6 +95,14 @@ void ofxShaderGlitch::setupPresetsManager()
 	//there's a kind of faster 'memory mode' that stores presets on a vector, and to xml files only on exit. 
 	//update, draw and autosave its handled by the addon. only must call exit method.
 	//api can disable trigger keys, hide/show gui and customize layout...etc
+}
+
+//--------------------------------------------------------------
+void ofxShaderGlitch::setPath_GlobalFolder(string folder)
+{
+	ofLogNotice(__FUNCTION__) << folder;
+	path_GLOBAL_Folder = folder;
+	CheckFolder(folder);
 }
 
 //--------------------------------------------------------------
