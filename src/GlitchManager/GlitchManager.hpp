@@ -67,6 +67,7 @@ class GlitchManager{
 	ofParameterGroup params;
 
     void doReset();
+	//ofParameterGroup params_Control;
 };
 
 #endif /* GlitchManager_hpp */

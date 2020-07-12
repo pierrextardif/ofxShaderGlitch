@@ -25,30 +25,71 @@
 
 #include "ofxPresetsManager.h"
 
+//#define USE_GUI_INTERNAL
+#ifdef USE_GUI_INTERNAL
 #include "ofxGui.h"
+#endif
 
 class ofxShaderGlitch {
 public:
+
 	ofxShaderGlitch() {
-		setPath_GlobalFolder("ofxShaderGlitch");
-	};
+		//setPath_GlobalFolder("ofxShaderGlitch");
+		//NOTE: this above line will force create the folder if do not exist at startup,
+		//and it's not the desired behaviour if we are using the addon in another addon like ofxFboFxHelper
+		//bc we will have an empty folder.. So:
+
+		path_GLOBAL_Folder = "ofxShaderGlitch";
+
+		bEnabledKeys = false;
+	};		
+
 	~ofxShaderGlitch() {};
 
 	void setup();
 	void exit();
+	
 	void keyPressed(ofKeyEventArgs &keyArgs);
+	bool bEnabledKeys;
+	void setKeysEnabled(bool b) {
+		bEnabledKeys = b;
+		presetsManager.setEnableKeys(b);
+	}
 
 	//shader
+//private:
 public:
 	GlitchManager glitch;//TODO: would like to make public only required params!
 
 public:
+	ofParameterGroup params_Control;
+
+	//TODO:
+	ofParameterGroup getParamGroup() {
+		return glitch.params;
+	}
+	ofParameterGroup getParamGroup_Tiling() {
+		return glitch.typeTiling;
+	}
+	ofParameterGroup getParamGroup_TypeEffect() {
+		return glitch.typeEffect;
+	}
+	ofParameterGroup getParamGroup_Control() {
+		return params_Control;
+	}
+
+public:
 	void begin();
 	void end();
-	void drawGUI();
 
+#ifdef USE_GUI_INTERNAL
+public:
+	void drawGUI();
 private:
 	void refreshGUI();
+#endif
+
+private:
 	string path_GLOBAL_Folder;
 
 public:
@@ -62,20 +103,22 @@ public:
 	void Changed_Params(ofAbstractParameter &e);
 
 private:
+#ifdef USE_GUI_INTERNAL
 	ofxPanel gui;//internal gui
+#endif
 	bool bVisibleGui = false;
 
 public:
 	//--------------------------------------------------------------
 	void setVisibleGui(bool b) {
 		bVisibleGui = b;
-		presetsManager.setVisible_GUI_ImGui(bVisibleGui);
+		//presetsManager.setVisible_GUI_ImGui(bVisibleGui);
 		presetsManager.setVisible_PresetClicker(bVisibleGui);
 	}
 	//--------------------------------------------------------------
 	void setToggleVisibleGui() {
 		bVisibleGui = !bVisibleGui;
-		presetsManager.setVisible_GUI_ImGui(bVisibleGui);
+		//presetsManager.setVisible_GUI_ImGui(bVisibleGui);
 		presetsManager.setVisible_PresetClicker(bVisibleGui);
 	}
 

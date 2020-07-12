@@ -70,9 +70,14 @@ void GlitchManager::initGui() {
 	params.add(bEnable);
 	params.add(bEnableBlur);
 	params.add(bReset);
+	params.add(typeEffectName.set("NAME", ""));
 	params.add(typeTiling);
 	params.add(typeEffect);
-	params.add(typeEffectName.set("NAME", ""));
+
+	//params_Control.setName("CONTROLS");
+	//params_Control.add(bEnable);
+	//params_Control.add(bReset);
+	//params_Control.add(typeEffectName.set("NAME", ""));
 
 	bReset.setSerializable(false);
 	typeEffectName.setSerializable(false);
@@ -197,9 +202,12 @@ void GlitchManager::end() {
 
 //--------------------------------------------------------------
 void GlitchManager::doReset() {
+	bEnableBlur = false;
+
 	typeT = 0;
 	speedMoves = ofVec2f(1, 1);
 	amntLinesColumns = ofVec2f(1, 1);
+
 	typeE = 0;
 	props.set(ofVec4f(0.25, 0.25, 0.75, 0.75));
 	alphaGradiant = (0.8);
