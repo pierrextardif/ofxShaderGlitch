@@ -69,13 +69,13 @@ public:
 	//--------------------------------------------------------------
 	void setVisibleGui(bool b) {
 		bVisibleGui = b;
-		presetsManager.setVisible_GUI_Browser(bVisibleGui);
+		presetsManager.setVisible_GUI_ImGui(bVisibleGui);
 		presetsManager.setVisible_PresetClicker(bVisibleGui);
 	}
 	//--------------------------------------------------------------
 	void setToggleVisibleGui() {
 		bVisibleGui = !bVisibleGui;
-		presetsManager.setVisible_GUI_Browser(bVisibleGui);
+		presetsManager.setVisible_GUI_ImGui(bVisibleGui);
 		presetsManager.setVisible_PresetClicker(bVisibleGui);
 	}
 

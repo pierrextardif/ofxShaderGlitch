@@ -10,7 +10,9 @@
 //--------------------------------------------------------------
 void ofxShaderGlitch::exit() {
 	presetsManager.exit();//only required to store some gui/class settings.
+
 	ofRemoveListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
+	ofRemoveListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
 }
 
 //--------------------------------------------------------------
@@ -19,8 +21,8 @@ void ofxShaderGlitch::setup() {
 	//presetsManager
 	setupPresetsManager();
 
-	ofAddListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
 	ofAddListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
+	ofAddListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
 }
 
 //--------------------------------------------------------------

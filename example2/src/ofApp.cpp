@@ -71,9 +71,12 @@ void ofApp::draw()
 		sprintf(tempStr, "%4.1f", ofGetFrameRate());
 		ofVec2f pos(ofGetWidth() - 30, ofGetHeight() - 5);
 		ofSetColor(0);
-		font.drawString(tempStr, pos.x + 1, pos.y + 1);
+		if (font.isLoaded())font.drawString(tempStr, pos.x + 1, pos.y + 1);
+		else ofDrawBitmapString(tempStr, pos.x + 1, pos.y + 1);
+
 		ofSetColor(255);
-		font.drawString(tempStr, pos.x, pos.y);
+		if (font.isLoaded())font.drawString(tempStr, pos.x, pos.y);
+		else ofDrawBitmapString(tempStr, pos.x, pos.y);
 
 		////shaderGlitch.drawGUI();//use addon internal gui panel
 		//gui.draw();//use external ofApp gui panel
