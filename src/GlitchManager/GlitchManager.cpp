@@ -203,6 +203,7 @@ void GlitchManager::end() {
 //--------------------------------------------------------------
 void GlitchManager::doReset() {
 	bEnableBlur = false;
+	bEnable = false;
 
 	typeT = 0;
 	speedMoves = ofVec2f(1, 1);

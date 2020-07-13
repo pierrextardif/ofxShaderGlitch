@@ -64,16 +64,19 @@ public:
 public:
 	ofParameterGroup params_Control;
 
-	//TODO:
+	//--------------------------------------------------------------
 	ofParameterGroup getParamGroup() {
 		return glitch.params;
 	}
+	//--------------------------------------------------------------
 	ofParameterGroup getParamGroup_Tiling() {
 		return glitch.typeTiling;
 	}
+	//--------------------------------------------------------------
 	ofParameterGroup getParamGroup_TypeEffect() {
 		return glitch.typeEffect;
 	}
+	//--------------------------------------------------------------
 	ofParameterGroup getParamGroup_Control() {
 		return params_Control;
 	}
@@ -83,12 +86,20 @@ public:
 	{
 		ofSetLogLevel("ofxShaderGlitch", level);
 	}
+	//--------------------------------------------------------------
+	void doReset()
+	{
+		glitch.doReset();
+	}
 	
 	//-
 
+	//feed the fx
 public:
 	void begin();
 	void end();
+
+	//-
 
 	//TODO:
 	//optional to debug..

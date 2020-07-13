@@ -36,7 +36,7 @@ void ofxShaderGlitch::update(ofEventArgs & args) {
 	//simple callback when preset is loaded 
 	if (presetsManager.isDoneLoad())
 	{
-		ofLogNotice(__FUNCTION__) << "[ " << presetsManager.getGroupName() << "] -------------------------------------------------------------> PRESET LOADED. DONE!";
+		ofLogNotice(__FUNCTION__) << "[ " << presetsManager.getGroupName() << "] ------------------------------------------------------------- PRESET LOADED";
 	}
 }
 
