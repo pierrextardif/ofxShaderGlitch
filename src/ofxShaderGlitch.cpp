@@ -13,16 +13,31 @@ void ofxShaderGlitch::exit() {
 
 	ofRemoveListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
 	ofRemoveListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
+
+	ofRemoveListener(ofEvents().update, this, &ofxShaderGlitch::update);
 }
 
 //--------------------------------------------------------------
 void ofxShaderGlitch::setup() {
+	setLogLevel(OF_LOG_NOTICE);
 
 	//presetsManager
 	setupPresetsManager();
 
 	ofAddListener(params.parameterChangedE(), this, &ofxShaderGlitch::Changed_Params);
 	ofAddListener(ofEvents().keyPressed, this, &ofxShaderGlitch::keyPressed);
+
+	ofAddListener(ofEvents().update, this, &ofxShaderGlitch::update);//used only to debug
+}
+
+//--------------------------------------------------------------
+void ofxShaderGlitch::update(ofEventArgs & args) {
+	//debug presetsManager
+	//simple callback when preset is loaded 
+	if (presetsManager.isDoneLoad())
+	{
+		ofLogNotice(__FUNCTION__) << "[ " << presetsManager.getGroupName() << "] -------------------------------------------------------------> PRESET LOADED. DONE!";
+	}
 }
 
 //--------------------------------------------------------------
@@ -56,7 +71,7 @@ void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs) {
 		else if (keyArgs.key == 'c') {
 			glitch.nonMaxAndContinuity = !glitch.nonMaxAndContinuity;
 			ofLogNotice(__FUNCTION__) << " maxContinuity = " << ofToString(glitch.nonMaxAndContinuity);
-		}
+	}
 
 		else if (keyArgs.key == ' ') {
 			presetsManager.setToggleRandomizerPreset();
@@ -66,7 +81,7 @@ void ofxShaderGlitch::keyPressed(ofKeyEventArgs &keyArgs) {
 			presetsManager.doRandomizePresetSelected();
 			//presetsManager.doRandomizePresetFromFavs();
 		}
-	}
+}
 }
 
 //--------------------------------------------------------------
@@ -113,7 +128,7 @@ void ofxShaderGlitch::setupPresetsManager()
 	params_Control.setName("CONTROLS");
 	params_Control.add(glitch.bEnable);
 	params_Control.add(presetsManager.PRESET_selected);
-	params_Control.add(presetsManager.ENABLE_RandomizeTimer);
+	params_Control.add(presetsManager.PLAY_RandomizeTimer);
 	params_Control.add(glitch.typeEffectName.set("TYPE", ""));
 	params_Control.add(glitch.bEnableBlur);
 	params_Control.add(glitch.bReset);
@@ -199,6 +214,6 @@ void ofxShaderGlitch::refreshGUI()
 		gA.getGroup("CELL").minimize();
 		gB.maximize();
 		break;
-}
+	}
 }
 #endif

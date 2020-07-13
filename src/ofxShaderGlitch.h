@@ -78,9 +78,21 @@ public:
 		return params_Control;
 	}
 
+	//--------------------------------------------------------------
+	void setLogLevel(ofLogLevel level)
+	{
+		ofSetLogLevel("ofxShaderGlitch", level);
+	}
+	
+	//-
+
 public:
 	void begin();
 	void end();
+
+	//TODO:
+	//optional to debug..
+	void update(ofEventArgs & args);
 
 #ifdef USE_GUI_INTERNAL
 public:
